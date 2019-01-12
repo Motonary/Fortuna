@@ -1,10 +1,7 @@
 const path = require('path')
-// const ExtractTextPlugin = require('extract-text-webpack-plugin')
-
-const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development';
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = {
-  mode,
   devtool: 'source-map',
   entry: {
     bundle: './src/javascripts/app.tsx',
@@ -25,24 +22,24 @@ module.exports = {
   },
   module: {
     rules: [
-      // {
-      //   test: /\.scss$/,
-      //   use: ExtractTextPlugin.extract({
-      //     fallback: 'style-loader',
-      //     use: 'css-loader!sass-loader',
-      //   }),
-      // },
-      // {
-      //   test: /\.(png|jpg|gif)$/,
-      //   use: [
-      //     {
-      //       loader: 'file-loader',
-      //       options: {
-      //         name: '[path][name].[ext]',
-      //       },
-      //     },
-      //   ],
-      // },
+      {
+        test: /\.scss$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader!sass-loader',
+        }),
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[path][name].[ext]',
+            },
+          },
+        ],
+      },
       {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
@@ -52,5 +49,5 @@ module.exports = {
       },
     ],
   },
-  // plugins: [new ExtractTextPlugin({ filename: '[name].css', allChunks: true })],
+  plugins: [new ExtractTextPlugin({ filename: '[name].css', allChunks: true })],
 }
