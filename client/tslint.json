@@ -9,7 +9,7 @@
   "rules": {
     "variable-name": false,
     "one-variable-per-declaration": false,
-    "no-console": "error",
+    "no-console": true,
     "no-debugger": true,
     "prettier": [
       true,
