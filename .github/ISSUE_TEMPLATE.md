@@ -7,6 +7,8 @@ about: Suggest an idea for this project
 
 ## 背景
 
+## 詳細
+
 ## URL
 
 ## その他
