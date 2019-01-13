@@ -1,4 +1,4 @@
-const path = require("path");
+const path = require("path")
 
 module.exports = (baseConfig, env, defaultConfig) => {
   defaultConfig.module.rules.push({
@@ -12,14 +12,13 @@ module.exports = (baseConfig, env, defaultConfig) => {
     test: /\.stories\.jsx?$/,
     loaders: [
       {
-          loader: require.resolve("@storybook/addon-storysource/loader"),
-          options: { parser: "typescript" }
+        loader: require.resolve("@storybook/addon-storysource/loader"),
+        options: { parser: "typescript" }
       }
     ],
     enforce: "pre"
   });
+  defaultConfig.resolve.extensions.push(".ts", ".tsx")
 
-  defaultConfig.resolve.extensions.push(".ts", ".tsx");
-
-  return defaultConfig;
-};
+  return defaultConfig
+}
