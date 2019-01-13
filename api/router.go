@@ -26,7 +26,7 @@ func init() {
 	// For debugging/example purposes, we generate and print
 	// a sample jwt token with claims `user_id:123` here:
 	_, tokenString, _ := tokenAuth.Encode(jwt.MapClaims{"user_id": 2})
-	fmt.Printf("DEBUG: a sample jwt is %s\n\n", tokenString)
+	log.Printf("DEBUG: a sample jwt is %s\n\n", tokenString)
 }
 
 func Main() {
@@ -69,11 +69,11 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(401), 401)
 		return
 	}
+
 	// 以下のエラーが出るのでタイプアサーションの後、intにキャスト
 	// panic: interface conversion: interface {} is float64, not int [recovered]
 	// panic: interface conversion: interface {} is float64, not int
 	// goroutine 36 [running]: -> loop
-
 	userID := int(claims["user_id"].(float64))
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 	log.Println("user_id : " + string(userID))
