@@ -1,4 +1,6 @@
+# edditor setting
+.vscode
+
+# frontend modules
 /client/node_modules
 /client/dist/bundle.js
-
-.vscode
