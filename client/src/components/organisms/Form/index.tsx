@@ -1,0 +1,68 @@
+import React from 'react'
+import { Field, Formik } from 'formik'
+
+import Button from '../../atoms/Button'
+import ErrorMessage from '../../atoms/ErrorMessage'
+
+import { FormValues } from './form-types'
+import './style.css'
+
+function validate(values: FormValues) {
+  let errors: any
+
+  if (!values.username) {
+    errors.username = 'Username required'
+  } else if (values.username && values.username.length > 50) {
+    errors.username = 'Too long username'
+  }
+
+  if (!values.email) {
+    errors.email = 'Required'
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = 'Invalid email address'
+  }
+  if (!values.password) {
+    errors.password = 'Required'
+  }
+
+  if (!values.confirmation) {
+    errors.confirmation = 'Password confirmation required'
+  } else if (values.password !== values.confirmation) {
+    errors.confirmation = 'Not match password'
+  }
+
+  return errors
+}
+
+function submit(values: FormValues, actions: any) {
+  this.props
+    .createSession(values.email, values.password)
+    .then(() => actions.setSubmitting(false))
+    .catch(() => actions.setSubmitting(false))
+}
+
+function formFactory(type: string) {
+  return ({ ...props }: any) => (
+    <div id={`${type}-form`}>
+      <Formik
+        initialValues={{ ...props }}
+        validate={validate}
+        onSubmit={submit}
+        render={({ handleSubmit, isSubmitting }) => (
+          <form onSubmit={handleSubmit}>
+            <Field type="email" name="email" placeholder="Email" />
+            <ErrorMessage name="email" />
+            <Field type="password" name="password" placeholder="Password" />
+            <ErrorMessage name="password" />
+            <Button type="submit" disabled={isSubmitting}>
+              Submit
+            </Button>
+          </form>
+        )}
+      />
+    </div>
+  )
+}
+
+export const SignInForm = formFactory('signin')
+export const SignUpForm = formFactory('signup')
