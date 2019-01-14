@@ -23,7 +23,7 @@ func UpdateUser(id int) (*User, bool) {
 		Email:  "email",
 		Password: "password",
 	}
-	return user, true
+	return user, false
 }
 
 func DeleteUser(id int) (*User, bool) {
@@ -33,7 +33,7 @@ func DeleteUser(id int) (*User, bool) {
 		Email:  "email",
 		Password: "password",
 	}
-	return user, true
+	return user, false
 }
 // func (u *User) IsMale() bool {
 // 	return u.Gender == "male"

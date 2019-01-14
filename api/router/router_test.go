@@ -1,4 +1,4 @@
-package api
+package router
 
 import (
 	"net/http"
@@ -10,7 +10,7 @@ import (
 )
 
 func TestUnauthorizedRequestHandle(t *testing.T) {
-	router := router()
+	router := Router()
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest("GET", "/users/1", nil)
 
@@ -29,7 +29,7 @@ func TestAuthorizedRequestHandle(t *testing.T) {
 	tokenAuth := jwtauth.New("HS256", []byte("secret"), nil)
 	_, tokenString, _ := tokenAuth.Encode(jwt.MapClaims{"user_id": 2})
 
-	router := router()
+	router := Router()
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest("GET", "/users/2", nil)
 	r.Header.Set("Authorization", "Bearer " + tokenString)

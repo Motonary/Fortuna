@@ -71,8 +71,8 @@ func dbGetUser(userID int) (*entity.User, error) {
 }
 
 func dbUpdateUser(userID int) (*entity.User, int) {
-	_, err := entity.UpdateUser(userID)
 	var errCode int
+	_, err := entity.UpdateUser(userID)
 	if err {
 		errCode = http.StatusInternalServerError
 	}
@@ -80,8 +80,8 @@ func dbUpdateUser(userID int) (*entity.User, int) {
 }
 
 func dbDeleteUser(userID int) (*entity.User, int) {
-	_, err := entity.DeleteUser(userID)
 	var errCode int
+	_, err := entity.DeleteUser(userID)
 	if err {
 		errCode = http.StatusInternalServerError
 	}

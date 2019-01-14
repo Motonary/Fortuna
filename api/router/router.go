@@ -1,4 +1,4 @@
-package api
+package router
 
 import (
 	"fmt"
@@ -38,7 +38,6 @@ func router() http.Handler {
 		r.Use(jwtauth.Authenticator)
 
 		r.Route("/users", func(r chi.Router) {
-		
 			r.Post("/", handler.CreateUser)
 			
 			r.Route("/{userID}", func(r chi.Router) {
@@ -48,7 +47,5 @@ func router() http.Handler {
 			})
 		})
 	})
-
 	return mux
-
 }
