@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { Field, getIn } from 'formik'
 import './style.css'
 
