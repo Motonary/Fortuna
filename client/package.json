@@ -2,13 +2,19 @@
   "name": "fortuna",
   "version": "1.0.0",
   "main": "index.js",
+  "author": "Motonary",
+  "license": "ISC",
   "scripts": {
     "release": "webpack --mode production --config webpack.config.js",
     "watch": "webpack-dev-server --mode development --history-api-fallback",
     "storybook": "start-storybook -p 9001 -c src/.storybook",
     "lint": "yarn tslint ./src/**/*.{ts,tsx}",
-    "fix": "yarn tslint --fix ./src/javascripts/**/*.{ts,tsx}",
-    "precommit": "lint-staged"
+    "fix": "yarn tslint --fix ./src/javascripts/**/*.{ts,tsx}"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -16,8 +22,6 @@
       "git add"
     ]
   },
-  "author": "Motonary",
-  "license": "ISC",
   "dependencies": {
     "@types/classnames": "2.2.7",
     "@types/keymirror": "0.1.1",
