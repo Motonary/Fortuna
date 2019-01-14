@@ -1,6 +1,5 @@
 const path = require('path')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
 module.exports = {
   devtool: 'source-map',
@@ -56,7 +55,6 @@ module.exports = {
     ],
   },
   plugins: [
-    [new ExtractTextPlugin({ filename: '[name].css', allChunks: true })],
     [new MiniCssExtractPlugin({ filename: "[name].css", chunkFilename: "[id].css"})]
   ],
 }
