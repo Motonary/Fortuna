@@ -7,6 +7,6 @@ import './style.css'
 // interface TopPageTemplateProps {
 // }
 
-const TopPageTemplate: React.SFC<> = () => <SignInForm email="" password="" />
+const TopPageTemplate: React.SFC = () => <SignInForm email="" password="" />
 
 export default TopPageTemplate

@@ -35,10 +35,11 @@ function validate(values: FormValues) {
 }
 
 function submit(values: FormValues, actions: any) {
-  this.props
-    .createSession(values.email, values.password)
-    .then(() => actions.setSubmitting(false))
-    .catch(() => actions.setSubmitting(false))
+  // submit actions
+  // this.props
+  //   .createSession(values.email, values.password)
+  //   .then(() => actions.setSubmitting(false))
+  //   .catch(() => actions.setSubmitting(false))
 }
 
 function formFactory(type: string) {

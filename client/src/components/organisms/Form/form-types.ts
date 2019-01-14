@@ -10,4 +10,4 @@ interface CreateSessionValues {
   password: string
 }
 
-export type FormValues = CreateUserValues | CreateSessionValues
+export type FormValues = CreateUserValues // | CreateSessionValues
