@@ -1,5 +1,6 @@
 const path = require('path')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   devtool: 'source-map',
@@ -23,11 +24,16 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.scss$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: 'css-loader!sass-loader',
-        }),
+        test: /\.css$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              publicPath: '../'
+            }
+          },
+          "css-loader"
+        ],
       },
       {
         test: /\.(png|jpg|gif)$/,
@@ -49,5 +55,8 @@ module.exports = {
       },
     ],
   },
-  plugins: [new ExtractTextPlugin({ filename: '[name].css', allChunks: true })],
+  plugins: [
+    [new ExtractTextPlugin({ filename: '[name].css', allChunks: true })],
+    [new MiniCssExtractPlugin({ filename: "[name].css", chunkFilename: "[id].css"})]
+  ],
 }
