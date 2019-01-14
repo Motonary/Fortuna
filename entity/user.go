@@ -16,6 +16,25 @@ func NewUser(id int ,name string, email string, password string) *User {
 	}
 }
 
+func UpdateUser(id int) (*User, bool) {
+	user :=  &User{
+		Id: id,
+		Name: "name",
+		Email:  "email",
+		Password: "password",
+	}
+	return user, true
+}
+
+func DeleteUser(id int) (*User, bool) {
+	user :=  &User{
+		Id: id,
+		Name: "name",
+		Email:  "email",
+		Password: "password",
+	}
+	return user, true
+}
 // func (u *User) IsMale() bool {
 // 	return u.Gender == "male"
 // }

@@ -1,7 +1,6 @@
 package api
 
 import (
-	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -26,9 +25,9 @@ func TestUnauthorizedRequestHandle(t *testing.T) {
 	}
 }
 
-func TestGetUserHandlerResponse(t *testing.T) {
-	tokenAuth = jwtauth.New("HS256", []byte("secret"), nil)
-	_, tokenString, _ := tokenAuth.Encode(jwt.MapClaims{"user_id": 3})
+func TestAuthorizedRequestHandle(t *testing.T) {
+	tokenAuth := jwtauth.New("HS256", []byte("secret"), nil)
+	_, tokenString, _ := tokenAuth.Encode(jwt.MapClaims{"user_id": 2})
 
 	router := router()
 	w := httptest.NewRecorder()
@@ -46,13 +45,4 @@ func TestGetUserHandlerResponse(t *testing.T) {
 	if rw.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code : %d", rw.StatusCode)
 	}
-	b, err := ioutil.ReadAll(rw.Body)
-	if err != nil {
-		t.Fatal("unexpected error")
-	}
-	t.Logf("responsed json : %s\n", string(b))
-	// const expected = "<h1>Oracle</h1>"
-	// if s := string(b); s != expected {
-	// 	t.Fatalf("unexpected response: %s", s)
-	// }
 }
