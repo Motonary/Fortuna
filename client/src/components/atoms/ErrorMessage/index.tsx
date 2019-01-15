@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { Field, getIn } from 'formik'
-import './style.css'
 
 interface ErrorMessageProps {
   name: string

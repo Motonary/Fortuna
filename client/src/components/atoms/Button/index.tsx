@@ -1,5 +1,5 @@
 import * as React from 'react'
-import './styles.css'
+import './style.css'
 
 function buttonFactory(type: string) {
   return ({ children, className, ...props }: any) => (

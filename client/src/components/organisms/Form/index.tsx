@@ -5,7 +5,6 @@ import Button from '../../atoms/Button'
 import ErrorMessage from '../../atoms/ErrorMessage'
 
 import { FormValues } from './form-types'
-import './style.css'
 
 function validate(values: FormValues) {
   let errors: any
