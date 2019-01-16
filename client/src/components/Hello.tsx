@@ -1,5 +1,7 @@
 import * as React from 'react'
 
-const Hello = () => <h1>Hello, World!</h1>
+import { PrimaryButton } from './atoms/Button'
+
+const Hello = () => <PrimaryButton>Hello World</PrimaryButton>
 
 export default Hello

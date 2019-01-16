@@ -16,7 +16,7 @@
   opacity: .7;
 }
 
-.default {
+.normal {
   background-color: inherit;
   border: var(--border);
   color: var(--color-info);
