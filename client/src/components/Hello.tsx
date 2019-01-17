@@ -1,7 +1,8 @@
 import * as React from 'react'
 
-import { PrimaryButton } from './atoms/Button'
+// import { PrimaryButton } from './atoms/Button'
+import TopPagePage from './pages/TopPagePage'
 
-const Hello = () => <PrimaryButton>Hello World</PrimaryButton>
+const Hello = () => <TopPagePage />
 
 export default Hello

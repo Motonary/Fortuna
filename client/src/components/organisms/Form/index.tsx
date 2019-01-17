@@ -1,5 +1,6 @@
 import React from 'react'
 import { Field, Formik } from 'formik'
+import _ from 'lodash'
 
 import Button from '../../atoms/Button'
 import ErrorMessage from '../../atoms/ErrorMessage'
@@ -50,10 +51,14 @@ function formFactory(type: string) {
         onSubmit={submit}
         render={({ handleSubmit, isSubmitting }) => (
           <form onSubmit={handleSubmit}>
-            <Field type="email" name="email" placeholder="Email" />
-            <ErrorMessage name="email" />
-            <Field type="password" name="password" placeholder="Password" />
-            <ErrorMessage name="password" />
+            {_.map(Object.keys(props), key => {
+              return (
+                <div>
+                  <Field type={`${key}`} name={`${key}`} placeholder={`${key}`} />
+                  <ErrorMessage name={`${key}`} />
+                </div>
+              )
+            })}
             <Button type="submit" disabled={isSubmitting}>
               Submit
             </Button>

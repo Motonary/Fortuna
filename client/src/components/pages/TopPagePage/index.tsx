@@ -2,7 +2,7 @@ import * as React from 'react'
 import TopPageTemplate from '../../templates/TopPageTemplate'
 
 class TopPagePage extends React.Component {
-  render() {
+  render(): JSX.Element {
     return <TopPageTemplate />
   }
 }

@@ -1,10 +1,15 @@
 import React from 'react'
 
-import { SignInForm } from '../../organisms/Form'
+import { SignInForm, SignUpForm } from '../../organisms/Form'
 
 // interface TopPageTemplateProps {
 // }
 
-const TopPageTemplate: React.SFC = () => <SignInForm email="" password="" />
+const TopPageTemplate: React.SFC = () => (
+  <div>
+    <SignInForm email="" password="" />
+    <SignUpForm name="" email="" password="" confirmation="" />
+  </div>
+)
 
 export default TopPageTemplate
