@@ -3,7 +3,7 @@ import * as styles from './style.css'
 
 function buttonFactory(type: string) {
   return ({ children, className, ...props }: any) => (
-    <button className={[styles.button, styles[type], className].join(' ')} {...props}>
+    <button className={[styles.button, styles.normal, className].join(' ')} {...props}>
       {children}
     </button>
   )

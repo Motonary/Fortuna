@@ -1,4 +1,4 @@
-@import "../../properties.css";
+@import url("../../properties.css");
 
 .button {
   border-radius: var(--radius);
