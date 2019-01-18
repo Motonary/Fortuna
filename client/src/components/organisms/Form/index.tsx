@@ -1,9 +1,11 @@
 import React from 'react'
-import { Field, Formik } from 'formik'
+import { Field, Formik, ErrorMessage } from 'formik'
 import _ from 'lodash'
 
-import Button from '../../atoms/Button'
-import ErrorMessage from '../../atoms/ErrorMessage'
+import { PrimaryButton } from '../../atoms/Button'
+// import ErrorMessage from '../../atoms/ErrorMessage'
+
+import styles from './style.css'
 
 import { FormValues } from './form-types'
 
@@ -44,24 +46,30 @@ function submit(values: FormValues, actions: any) {
 
 function formFactory(type: string) {
   return ({ ...props }: any) => (
-    <div id={`${type}-form`}>
+    <div id={styles.formContainer}>
+      <h1 id={styles.formName}>{type.toUpperCase()}</h1>
       <Formik
         initialValues={{ ...props }}
         validate={validate}
         onSubmit={submit}
         render={({ handleSubmit, isSubmitting }) => (
-          <form onSubmit={handleSubmit}>
+          <form className={styles.signForm} onSubmit={handleSubmit}>
             {_.map(Object.keys(props), key => {
               return (
-                <div>
-                  <Field type={`${key}`} name={`${key}`} placeholder={`${key}`} />
-                  <ErrorMessage name={`${key}`} />
+                <div className={styles.formFields}>
+                  <Field
+                    type={`${key}`}
+                    name={`${key}`}
+                    placeholder={`${key}`}
+                    className={styles.formField}
+                  />
+                  <ErrorMessage name={`${key}`}>{msg => <div>{msg}</div>}</ErrorMessage>
                 </div>
               )
             })}
-            <Button type="submit" disabled={isSubmitting}>
+            <PrimaryButton type="submit" className={styles.formButton} disabled={isSubmitting}>
               Submit
-            </Button>
+            </PrimaryButton>
           </form>
         )}
       />

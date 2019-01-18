@@ -10,8 +10,7 @@
     "storybook": "start-storybook -p 9001 -c src/.storybook",
     "lint": "yarn tslint ./src/**/*.{ts,tsx}",
     "fix": "yarn tslint --fix ./src/javascripts/**/*.{ts,tsx}",
-    "test": "jest",
-    "tsc": "tsc"
+    "test": "jest"
   },
   "husky": {
     "hooks": {
@@ -21,7 +20,6 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "yarn fix",
-      "yarn test",
       "git add"
     ]
   },
@@ -105,6 +103,7 @@
     ],
     "moduleNameMapper": {
       "\\.(css)$": "identity-obj-proxy"
-    }
+    },
+    "verbose": true
   }
 }
