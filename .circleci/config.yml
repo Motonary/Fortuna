@@ -25,4 +25,5 @@ jobs:
       - run: go get github.com/dgrijalva/jwt-go
       - run: go get github.com/go-chi/chi
       - run: go get github.com/go-chi/jwtauth
+      - run: go get github.com/Motonary/Fortuna
       - run: go test -v -cover ./...
