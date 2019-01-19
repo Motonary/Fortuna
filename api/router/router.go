@@ -24,7 +24,7 @@ func init() {
 }
 
 func Main() {
-	addr := ":3000"
+	addr := ":3000/v1"
 	fmt.Printf("Starting server on %v\n", addr)
 	http.ListenAndServe(addr, router())
 }
