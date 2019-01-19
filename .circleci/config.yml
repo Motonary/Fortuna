@@ -21,10 +21,6 @@ jobs:
     steps:
       - checkout
 
-       - restore_cache:
-          keys:
-          - jq
-
       - run:
           name: プルリクエストに紐付いていたらbaseブランチをマージ
           command: |
@@ -46,8 +42,3 @@ jobs:
       - run: go get github.com/go-chi/jwtauth
       - run: go get github.com/Motonary/Fortuna
       - run: go test -v -cover ./...
-
-      - save_cache:
-          key: jq
-          paths:
-            - jq
