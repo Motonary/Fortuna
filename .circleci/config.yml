@@ -22,7 +22,8 @@ jobs:
     steps:
       - run: echo 'export PATH=${GOPATH}/bin/:${PATH}' >> $BASH_ENV
       - checkout
-      - run: go get github.com/dgrijalva/jwt-go
-      - run: go get github.com/go-chi/chi
-      - run: go get github.com/go-chi/jwtauth
+      - run: go get -v -t -d ./...
+      # - run: go get github.com/dgrijalva/jwt-go
+      # - run: go get github.com/go-chi/chi
+      # - run: go get github.com/go-chi/jwtauth
       - run: go test -v -cover ./...
