@@ -11,8 +11,8 @@ import (
 )
 
 type Response struct {
-	Status 	int				`json:"status"`
-	User *entity.User	`json:"user", omitempty`
+	Status int          `json:"status"`
+	User   *entity.User `json:"user", omitempty`
 }
 
 // POST /users
@@ -114,8 +114,8 @@ func getUserParams(r *http.Request) (int, int) {
 func jsonResponse(w http.ResponseWriter, response Response) {
 	res, err := json.Marshal(response)
 	if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")

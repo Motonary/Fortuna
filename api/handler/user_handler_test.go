@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"os"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -18,10 +18,10 @@ var mux *chi.Mux
 func TestGetUserHandlerResponse(t *testing.T) {
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest("GET", "/users/2", nil)
-	r.Header.Set("Authorization", "Bearer " + tokenString)
+	r.Header.Set("Authorization", "Bearer "+tokenString)
 
-	mux.ServeHTTP(w,r)
-	
+	mux.ServeHTTP(w, r)
+
 	GetUser(w, r)
 	rw := w.Result()
 	defer rw.Body.Close()
@@ -34,9 +34,9 @@ func TestGetUserHandlerResponse(t *testing.T) {
 func TestUpdatetUserHandlerResponse(t *testing.T) {
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest("PUT", "/users/2", nil)
-	r.Header.Set("Authorization", "Bearer " + tokenString)
+	r.Header.Set("Authorization", "Bearer "+tokenString)
 
-	mux.ServeHTTP(w,r)
+	mux.ServeHTTP(w, r)
 
 	UpdateUser(w, r)
 	rw := w.Result()
@@ -50,9 +50,9 @@ func TestUpdatetUserHandlerResponse(t *testing.T) {
 func TestDeleteUserHandlerResponse(t *testing.T) {
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest("DELETE", "/users/2", nil)
-	r.Header.Set("Authorization", "Bearer " + tokenString)
+	r.Header.Set("Authorization", "Bearer "+tokenString)
 
-	mux.ServeHTTP(w,r)
+	mux.ServeHTTP(w, r)
 
 	DeleteUser(w, r)
 	rw := w.Result()
@@ -74,9 +74,9 @@ func setup() {
 		r.Route("/users", func(r chi.Router) {
 			r.Use(jwtauth.Verifier(tokenAuth))
 			r.Use(jwtauth.Authenticator)
-		
+
 			r.Post("/", CreateUser)
-			
+
 			r.Route("/{userID}", func(r chi.Router) {
 				r.Get("/", GetUser)
 				r.Put("/", UpdateUser)
@@ -94,7 +94,7 @@ func TestMain(m *testing.M) {
 	setup()
 	ret := m.Run()
 	if ret == 0 {
-			teardown()
+		teardown()
 	}
 	os.Exit(ret)
 }
