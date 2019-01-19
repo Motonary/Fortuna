@@ -1,8 +1,8 @@
 import * as React from 'react'
 
 // import { PrimaryButton } from './atoms/Button'
-import TopPagePage from './pages/TopPagePage'
+import TopPage from './pages/TopPage'
 
-const Hello = () => <TopPagePage />
+const Hello = () => <TopPage />
 
 export default Hello
