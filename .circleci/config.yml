@@ -21,21 +21,6 @@ jobs:
     steps:
       - checkout
 
-      - run:
-          name: プルリクエストに紐付いていたらbaseブランチをマージ
-          command: |
-              if [[ -n ${CIRCLE_PULL_REQUEST} ]]; then
-                if [[ ! -e jq ]]; then
-                  curl -L "https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64" -o jq
-                  chmod +x jq
-                fi
-                GITHUB_PR_URL=`echo "${CIRCLE_PULL_REQUEST}" | sed -e s:github.com:api.github.com/repos: -e s:pull:pulls:`
-                TARGET_BRANCH=$(curl -H "Authorization: token ${GITHUB_ACCESS_TOKEN}" "${GITHUB_PR_URL}" | jq '.base.ref' | tr -d '"')
-                git config user.name rechtburg
-                git config user.email y.shirota.research.a.develop@gmail.com
-                git merge "origin/${TARGET_BRANCH}" -m "merge for test"
-              fi
-
       # specify any bash command here prefixed with `run: `
       - run: go get github.com/dgrijalva/jwt-go
       - run: go get github.com/go-chi/chi
