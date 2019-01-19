@@ -1,13 +1,28 @@
 import * as React from 'react'
 import ReactDOM from 'react-dom'
-// import { Provider } from 'react-redux'
-// import { createStore, applyMiddleware } from 'redux'
-// import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
-// import promise from 'redux-promise'
-// import reducers from './reducers'
+import { Provider } from 'react-redux'
+import { createStore, applyMiddleware } from 'redux'
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
+import reducers from './reducers'
 
 import Hello from './components/Hello'
+import Auth from './components/utils/auth'
 
-// const createStoreWithMiddleware: any = applyMiddleware()
+// const createStoreWithMiddleware: any = applyMiddleware(promise)(createStore)
 
-ReactDOM.render(<Hello />, document.getElementById('app'))
+ReactDOM.render(
+  <Provider store={createStoreWithMiddleware(reducers)}>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Hello} />
+        <Auth>
+          <Switch>
+            <Route exact path="/" component={Hello} />
+            <Route render={() => <h2>404 Not Found</h2>} />
+          </Switch>
+        </Auth>
+      </Switch>
+    </Router>
+  </Provider>,
+  document.getElementById('app')
+)
