@@ -23,7 +23,7 @@ func init() {
 	log.Printf("DEBUG: a sample jwt is %s\n\n", tokenString)
 }
 
-func main() {
+func Main() {
 	addr := ":3000/v1"
 	fmt.Printf("Starting server on %v\n", addr)
 	http.ListenAndServe(addr, router())

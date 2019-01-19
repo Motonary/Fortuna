@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/motonary/Fortuna/api"
+	"github.com/motonary/Fortuna/router"
 )
 
 func main() {
-	api.Main()
+	router.Main()
 }
