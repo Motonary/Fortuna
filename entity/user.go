@@ -1,40 +1,45 @@
 package entity
 
+import "time"
+
 type User struct {
-	Id				int			`json:"id"`
-	Name 			string	`json:"name"`
-	Email			string	`json:"email"`
-	Password	string 	`json:"password"`
+	ID        uint      `json:"id" gorm:"primary_key"`
+	Name      string    `json:"name" gorm:"size:255"`
+	Email     string    `json:"email" gorm:"size:255"`
+	Password  string    `json:"password" gorm:"size:255"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 }
 
-func NewUser(id int ,name string, email string, password string) *User {
+func NewUser(id uint, name string, email string, password string) *User {
 	return &User{
-					Id: id,
-					Name: name,
-					Email:  email,
-					Password: password,
+		ID:       id,
+		Name:     name,
+		Email:    email,
+		Password: password,
 	}
 }
 
-func UpdateUser(id int) (*User, bool) {
-	user :=  &User{
-		Id: id,
-		Name: "name",
-		Email:  "email",
+func UpdateUser(id uint) (*User, bool) {
+	user := &User{
+		ID:       id,
+		Name:     "name",
+		Email:    "email",
 		Password: "password",
 	}
 	return user, false
 }
 
-func DeleteUser(id int) (*User, bool) {
-	user :=  &User{
-		Id: id,
-		Name: "name",
-		Email:  "email",
+func DeleteUser(id uint) (*User, bool) {
+	user := &User{
+		ID:       id,
+		Name:     "name",
+		Email:    "email",
 		Password: "password",
 	}
 	return user, false
 }
+
 // func (u *User) IsMale() bool {
 // 	return u.Gender == "male"
 // }

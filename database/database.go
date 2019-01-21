@@ -9,13 +9,6 @@ import (
 	_ "github.com/jinzhu/inflection"
 )
 
-type User struct {
-	gorm.Model
-	Name     string `gorm:"size:255"`
-	Email    string `gorm:"size:255"`
-	Password string `gorm:"size:255"`
-}
-
 func main() {
 	db := gormConnect()
 	defer db.Close()
@@ -28,7 +21,7 @@ func gormConnect() *gorm.DB {
 	DBMS := "mysql"
 	USER := "Motonary"
 	PASS := os.Getenv("DB_PASS")
-	PROTOCOL := "" // 必要？
+	PROTOCOL := ""
 	DBNAME := "fortuna"
 	OPTION := "charset=utf8&parseTime=True&loc=Local" // enable time.Time
 
