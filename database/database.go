@@ -1,23 +1,29 @@
-package main
+package database
 
 import (
+	"log"
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/inflection"
+
+	"github.com/motonary/Fortuna/entity"
 )
 
 func main() {
-	db := gormConnect()
+	db, err := gormConnect()
 	defer db.Close()
 
-	db.AutoMigrate(&User{})
-	// db.Create(&User{Name: "test", Email: "ririco722@motonary.com", Password: "password"})
+	if err != nil {
+		return
+	}
+
+	db.AutoMigrate(&entity.User{})
 }
 
-func gormConnect() *gorm.DB {
+func gormConnect() (*gorm.DB, error) {
 	DBMS := "mysql"
 	USER := "Motonary"
 	PASS := os.Getenv("DB_PASS")
@@ -29,8 +35,8 @@ func gormConnect() *gorm.DB {
 	db, err := gorm.Open(DBMS, CONNECT)
 
 	if err != nil {
-		panic("failed to connect database")
+		log.Print(err)
 	}
 
-	return db
+	return db, err
 }
