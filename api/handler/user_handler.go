@@ -66,11 +66,11 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	jsonResponse(w, response)
 }
 
-func dbGetUser(userID uint) (*entity.User, error) {
+func dbGetUser(userID int) (*entity.User, error) {
 	return entity.NewUser(userID, "ririco", "ririco@example.com", "test"), nil
 }
 
-func dbUpdateUser(userID uint) (*entity.User, int) {
+func dbUpdateUser(userID int) (*entity.User, int) {
 	var errCode int
 	_, err := entity.UpdateUser(userID)
 	if err {
@@ -79,7 +79,7 @@ func dbUpdateUser(userID uint) (*entity.User, int) {
 	return nil, errCode
 }
 
-func dbDeleteUser(userID uint) (*entity.User, int) {
+func dbDeleteUser(userID int) (*entity.User, int) {
 	var errCode int
 	_, err := entity.DeleteUser(userID)
 	if err {
@@ -88,8 +88,8 @@ func dbDeleteUser(userID uint) (*entity.User, int) {
 	return nil, errCode
 }
 
-func getUserParams(r *http.Request) (uint, int) {
-	var userID uint
+func getUserParams(r *http.Request) (int, int) {
+	var userID int
 
 	_, claims, err := jwtauth.FromContext(r.Context())
 	statusCode := http.StatusOK
@@ -102,7 +102,7 @@ func getUserParams(r *http.Request) (uint, int) {
 	if claims["user_id"] == nil {
 		statusCode = http.StatusInternalServerError
 	} else {
-		userID = uint(claims["user_id"].(float64))
+		userID = int(claims["user_id"].(float64))
 	}
 
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
