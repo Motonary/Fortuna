@@ -25,10 +25,10 @@ func main() {
 
 func gormConnect() (*gorm.DB, error) {
 	DBMS := "mysql"
-	USER := "Motonary"
+	USER := os.Getenv("DB_USER")
 	PASS := os.Getenv("DB_PASS")
 	PROTOCOL := ""
-	DBNAME := "fortuna"
+	DBNAME := os.Getenv("DB_NAME")
 	OPTION := "charset=utf8&parseTime=True&loc=Local" // enable time.Time
 
 	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + "?" + OPTION
