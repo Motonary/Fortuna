@@ -5,8 +5,8 @@ interface TextBoxProps {
   className: string
 }
 
-const TextBox: React.SFC<TextBoxProps> = ({ className, ...props }: any) => (
-  <input type="text" className={['textbox', className].join(' ')} {...props} />
+const TextBox: React.SFC<TextBoxProps> = ({ className }) => (
+  <input type="text" className={['textbox', className].join(' ')} />
 )
 
 export default TextBox
