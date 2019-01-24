@@ -14,7 +14,7 @@ func TestUnauthorizedRequestHandle(t *testing.T) {
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest("GET", "/users/1", nil)
 
-	router.ServeHTTP(w,r)
+	router.ServeHTTP(w, r)
 	rw := w.Result()
 	defer rw.Body.Close()
 
@@ -32,16 +32,16 @@ func TestAuthorizedRequestHandle(t *testing.T) {
 	router := router()
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest("GET", "/users/2", nil)
-	r.Header.Set("Authorization", "Bearer " + tokenString)
+	r.Header.Set("Authorization", "Bearer "+tokenString)
 
-  t.Logf("Header : %s \n", r.Header)
+	t.Logf("Header : %s \n", r.Header)
 
-	router.ServeHTTP(w,r)
+	router.ServeHTTP(w, r)
 	rw := w.Result()
 	defer rw.Body.Close()
 
 	t.Logf("responsed status code : %d\n", rw.StatusCode)
-	
+
 	if rw.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code : %d", rw.StatusCode)
 	}
