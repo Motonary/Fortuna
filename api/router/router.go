@@ -39,7 +39,7 @@ func router() http.Handler {
 
 		r.Route("/users", func(r chi.Router) {
 			r.Post("/", handler.CreateUser)
-			
+
 			r.Route("/{userID}", func(r chi.Router) {
 				r.Get("/", handler.GetUser)
 				r.Put("/", handler.UpdateUser)
