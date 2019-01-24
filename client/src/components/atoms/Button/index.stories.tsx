@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import Button, { PrimaryButton } from './index'
+import Button from './index'
 
 storiesOf('Button', module)
-  .add('デフォルト', () => <Button>デフォルト</Button>)
-  .add('プライマリ', () => <PrimaryButton>プライマリ</PrimaryButton>)
+  .add('normal', () => <Button type="submit" style="normal" label="normal" />)
+  .add('primary', () => <Button type="submit" style="primary" label="primary" />)
+  .add('warning', () => <Button type="submit" style="warning" label="warning" />)

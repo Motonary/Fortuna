@@ -31,3 +31,10 @@
   background-color: var(--color-warning);
   color: var(--color-text-outlined);
 }
+
+.form {
+  width: 400px;
+  height: 40px;
+  margin: 10px auto;
+  cursor: pointer;
+}

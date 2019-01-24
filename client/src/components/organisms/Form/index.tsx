@@ -2,7 +2,7 @@ import React from 'react'
 import { Field, Formik, ErrorMessage } from 'formik'
 import _ from 'lodash'
 
-import { PrimaryButton } from '../../atoms/Button'
+import Button from '../../atoms/Button'
 // import ErrorMessage from '../../atoms/ErrorMessage'
 
 import styles from './style.css'
@@ -67,9 +67,7 @@ function formFactory(type: string) {
                 </div>
               )
             })}
-            <PrimaryButton type="submit" className={styles.formButton} disabled={isSubmitting}>
-              Submit
-            </PrimaryButton>
+            <Button type="submit" style="form" label="submit" disabled={isSubmitting} />
           </form>
         )}
       />
