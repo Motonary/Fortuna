@@ -1,7 +1,7 @@
 :root {
 
   /* ***** バリュー層 ***** */
-  
+
   /* 色：色相名とカラーコードの紐づけ */
   --color-white: #fff;
   --color-black: #000;
@@ -78,7 +78,7 @@
   --fade-animation-duration: .2s;
   --fade-animation-timing: linear;
   --fade-animation: var(--fade-animation-duration) var(--fade-animation-timing);
-  
+
   /* Z 座標の管理（Web 媒体／CSS では Z 座標を管理する） */
   --z-header: 10;
 

@@ -11,13 +11,12 @@ import Auth from './components/utils/auth'
 // const createStoreWithMiddleware: any = applyMiddleware(promise)(createStore)
 
 ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
+  <Provider store={createStore(reducers)}>
     <Router>
       <Switch>
         <Route exact path="/" component={Hello} />
         <Auth>
           <Switch>
-            <Route exact path="/" component={Hello} />
             <Route render={() => <h2>404 Not Found</h2>} />
           </Switch>
         </Auth>
