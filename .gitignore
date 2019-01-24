@@ -8,3 +8,6 @@
 
 # logs
 /client/yarn-error.log*
+
+# Env variables
+.envrc

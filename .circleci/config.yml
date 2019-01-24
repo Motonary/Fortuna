@@ -4,8 +4,9 @@
 version: 2
 jobs:
   build:
+    environment:
+      - GOPATH: /home/circleci/go
     docker:
-      # specify the version
       - image: circleci/golang:1.11
       
       # Specify service dependencies here if necessary
@@ -19,8 +20,7 @@ jobs:
     ####   /go/src/bitbucket.org/circleci/go-tool
     working_directory: /go/src/github.com/motonary/Fortuna
     steps:
+      - run: echo 'export PATH=${GOPATH}/bin/:${PATH}' >> $BASH_ENV
       - checkout
-
-      # specify any bash command here prefixed with `run: `
-      # - run: go get -v -t -d ./...
-      # - run: go test -v ./...
+      - run: go get -v -t -d ./...
+      - run: go test -v -cover ./...
