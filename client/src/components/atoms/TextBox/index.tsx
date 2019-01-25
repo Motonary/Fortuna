@@ -1,12 +1,12 @@
 import * as React from 'react'
-import './styles.css'
+import * as styles from './style.css'
 
 interface TextBoxProps {
-  className: string
+  style: string
 }
 
-const TextBox: React.SFC<TextBoxProps> = ({ className }) => (
-  <input type="text" className={['textbox', className].join(' ')} />
+const TextBox: React.SFC<TextBoxProps> = ({ style }) => (
+  <input type="text" className={[styles.textbox, style].join(' ')} />
 )
 
 export default TextBox
