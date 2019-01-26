@@ -2,5 +2,12 @@
 .vscode
 
 # frontend modules
+/client/coverage
 /client/node_modules
 /client/dist/bundle.js
+
+# logs
+/client/yarn-error.log*
+
+# Env variables
+.envrc

@@ -12,7 +12,7 @@ module.exports = {
     publicPath: '/',
   },
   resolve: {
-    extensions: ['.js', '.ts', '.tsx'],
+    extensions: ['.js', '.ts', '.tsx', '.css'],
   },
   devServer: {
     contentBase: 'dist',
@@ -31,7 +31,15 @@ module.exports = {
               publicPath: '../'
             }
           },
-          "css-loader"
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+              modules: true,
+              importLoaders: 1,
+              localIdentName: '[local]___[hash:base64:5]',
+            }
+          },
         ],
       },
       {
@@ -54,7 +62,5 @@ module.exports = {
       },
     ],
   },
-  plugins: [
-    [new MiniCssExtractPlugin({ filename: "[name].css", chunkFilename: "[id].css"})]
-  ],
+  plugins: [new MiniCssExtractPlugin({ filename: "[name].css", chunkFilename: "[id].css"})],
 }

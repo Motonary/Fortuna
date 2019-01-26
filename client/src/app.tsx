@@ -1,14 +1,28 @@
 import * as React from 'react'
 import ReactDOM from 'react-dom'
-// import { Provider } from 'react-redux'
+import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
-import thunk from 'redux-thunk'
-// import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
-// import promise from 'redux-promise'
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import reducers from './reducers'
+// import thunk from 'redux-thunk'
 
 import Hello from './components/Hello'
+import Auth from './components/utils/auth'
 
-const store = createStore(reducers, applyMiddleware(thunk))
+// const store = createStore(reducers, applyMiddleware(thunk))
 
-ReactDOM.render(<Hello />, document.getElementById('app'))
+ReactDOM.render(
+  <Provider store={createStore(reducers)}>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Hello} />
+        <Auth>
+          <Switch>
+            <Route render={() => <h2>404 Not Found</h2>} />
+          </Switch>
+        </Auth>
+      </Switch>
+    </Router>
+  </Provider>,
+  document.getElementById('app')
+)

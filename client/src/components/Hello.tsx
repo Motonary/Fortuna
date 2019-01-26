@@ -1,5 +1,7 @@
 import * as React from 'react'
 
-const Hello = () => <h1>Hello, World!</h1>
+import TopPage from './pages/TopPage'
+
+const Hello = () => <TopPage />
 
 export default Hello
