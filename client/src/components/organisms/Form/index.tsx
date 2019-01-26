@@ -3,7 +3,6 @@ import { Field, Formik, ErrorMessage } from 'formik'
 import _ from 'lodash'
 
 import Button from '../../atoms/Button'
-// import ErrorMessage from '../../atoms/ErrorMessage'
 
 import styles from './style.css'
 
@@ -44,36 +43,36 @@ function submit(values: FormValues, actions: any) {
   //   .catch(() => actions.setSubmitting(false))
 }
 
-function formFactory(type: string) {
-  return ({ ...props }: any) => (
-    <div id={styles.formContainer}>
-      <h1 id={styles.formName}>{type.toUpperCase()}</h1>
-      <Formik
-        initialValues={{ ...props }}
-        validate={validate}
-        onSubmit={submit}
-        render={({ handleSubmit, isSubmitting }) => (
-          <form className={styles.signForm} onSubmit={handleSubmit}>
-            {_.map(Object.keys(props), key => {
-              return (
-                <div className={styles.formFields}>
-                  <Field
-                    type={`${key}`}
-                    name={`${key}`}
-                    placeholder={`${key}`}
-                    className={styles.formField}
-                  />
-                  <ErrorMessage name={`${key}`}>{msg => <div>{msg}</div>}</ErrorMessage>
-                </div>
-              )
-            })}
-            <Button type="submit" style="form" label="submit" disabled={isSubmitting} />
-          </form>
-        )}
-      />
-    </div>
-  )
-}
+// function formFactory(type: string) {
+const Form: React.SFC<any> = ({ formType, ...rest }) => (
+  <div id={styles.formContainer}>
+    <h1 id={styles.formName}>{formType}</h1>
+    <Formik
+      initialValues={{ ...rest }}
+      validate={validate}
+      onSubmit={submit}
+      render={({ handleSubmit, isSubmitting }) => (
+        <form className={styles.signForm} onSubmit={handleSubmit}>
+          {_.map(Object.keys(rest), key => {
+            return (
+              <div className={styles.formFields}>
+                <Field
+                  type={`${key}`}
+                  name={`${key}`}
+                  placeholder={`${key}`}
+                  className={styles.formField}
+                />
+                <ErrorMessage name={`${key}`}>{msg => <div>{msg}</div>}</ErrorMessage>
+              </div>
+            )
+          })}
+          <Button type="submit" style="form" disabled={isSubmitting}>
+            Submit
+          </Button>
+        </form>
+      )}
+    />
+  </div>
+)
 
-export const SignInForm = formFactory('signin')
-export const SignUpForm = formFactory('signup')
+export default Form

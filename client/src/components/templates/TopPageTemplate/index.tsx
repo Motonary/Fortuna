@@ -1,14 +1,14 @@
 import React from 'react'
 
-import { SignInForm, SignUpForm } from '../../organisms/Form'
+import Form from '../../organisms/Form'
 
 // interface TopPageTemplateProps {
 // }
 
 const TopPageTemplate: React.SFC = () => (
   <div>
-    <SignInForm email="" password="" />
-    <SignUpForm name="" email="" password="" confirmation="" />
+    <Form formType="signIn" email="" password="" />
+    <Form formType="signUp" name="" email="" password="" confirmation="" />
   </div>
 )
 

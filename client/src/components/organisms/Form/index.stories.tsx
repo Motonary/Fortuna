@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import { SignInForm, SignUpForm } from './index'
+import Form from './index'
 
 storiesOf('Form', module)
-  .add('Sign-In', () => <SignInForm email="" password="" />)
-  .add('Sign-Up', () => <SignUpForm name="" email="" password="" confirmation="" />)
+  .add('Sign-In', () => <Form formType="signIn" email="" password="" />)
+  .add('Sign-Up', () => <Form formType="signUp" name="" email="" password="" confirmation="" />)
