@@ -1,4 +1,4 @@
-package handler
+package api
 
 import (
 	"net/http"
@@ -7,13 +7,14 @@ import (
 	"testing"
 
 	jwt "github.com/dgrijalva/jwt-go"
-	"github.com/go-chi/chi"
 	"github.com/go-chi/jwtauth"
+	
+	"github.com/motonary/Fortuna/api"
 )
 
 var tokenAuth *jwtauth.JWTAuth
 var tokenString string
-var mux *chi.Mux
+var mux *http.Handler
 
 func TestGetUserHandlerResponse(t *testing.T) {
 	w := httptest.NewRecorder()
@@ -22,7 +23,7 @@ func TestGetUserHandlerResponse(t *testing.T) {
 
 	mux.ServeHTTP(w, r)
 
-	GetUser(w, r)
+	api.GetUser(w, r)
 	rw := w.Result()
 	defer rw.Body.Close()
 
@@ -38,7 +39,7 @@ func TestUpdatetUserHandlerResponse(t *testing.T) {
 
 	mux.ServeHTTP(w, r)
 
-	UpdateUser(w, r)
+	api.UpdateUser(w, r)
 	rw := w.Result()
 	defer rw.Body.Close()
 
@@ -54,7 +55,7 @@ func TestDeleteUserHandlerResponse(t *testing.T) {
 
 	mux.ServeHTTP(w, r)
 
-	DeleteUser(w, r)
+	api.DeleteUser(w, r)
 	rw := w.Result()
 	defer rw.Body.Close()
 
@@ -67,23 +68,23 @@ func setup() {
 	println("setup")
 	tokenAuth = jwtauth.New("HS256", []byte("secret"), nil)
 	_, tokenString, _ = tokenAuth.Encode(jwt.MapClaims{"user_id": 1})
+	
+	mux = api.Router()
 
-	mux = chi.NewRouter()
+	// mux.Group(func(r chi.Router) {
+	// 	r.Route("/users", func(r chi.Router) {
+	// 		r.Use(jwtauth.Verifier(tokenAuth))
+	// 		r.Use(jwtauth.Authenticator)
 
-	mux.Group(func(r chi.Router) {
-		r.Route("/users", func(r chi.Router) {
-			r.Use(jwtauth.Verifier(tokenAuth))
-			r.Use(jwtauth.Authenticator)
+	// 		r.Post("/", CreateUser)
 
-			r.Post("/", CreateUser)
-
-			r.Route("/{userID}", func(r chi.Router) {
-				r.Get("/", GetUser)
-				r.Put("/", UpdateUser)
-				r.Delete("/", DeleteUser)
-			})
-		})
-	})
+	// 		r.Route("/{userID}", func(r chi.Router) {
+	// 			r.Get("/", GetUser)
+	// 			r.Put("/", UpdateUser)
+	// 			r.Delete("/", DeleteUser)
+	// 		})
+	// 	})
+	// })
 }
 
 func teardown() {

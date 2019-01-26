@@ -1,4 +1,4 @@
-package router
+package api
 
 import (
 	"net/http"
@@ -6,11 +6,13 @@ import (
 	"testing"
 
 	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/go-chi/chi"
 	"github.com/go-chi/jwtauth"
 )
 
+var router *chi.Mux
+
 func TestUnauthorizedRequestHandle(t *testing.T) {
-	router := router()
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest("GET", "/users/1", nil)
 
@@ -29,7 +31,6 @@ func TestAuthorizedRequestHandle(t *testing.T) {
 	tokenAuth := jwtauth.New("HS256", []byte("secret"), nil)
 	_, tokenString, _ := tokenAuth.Encode(jwt.MapClaims{"user_id": 2})
 
-	router := router()
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest("GET", "/users/2", nil)
 	r.Header.Set("Authorization", "Bearer "+tokenString)

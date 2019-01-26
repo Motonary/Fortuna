@@ -1,4 +1,4 @@
-package router
+package api
 
 import (
 	"fmt"
@@ -9,10 +9,11 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/jwtauth"
 
-	handler "github.com/motonary/Fortuna/api/handler"
+	session "github.com/motonary/Fortuna/api/sessions"
 )
 
 var tokenAuth *jwtauth.JWTAuth
+var globalSessions *session.Manager
 
 func init() {
 	tokenAuth = jwtauth.New("HS256", []byte("secret"), nil)
@@ -21,15 +22,17 @@ func init() {
 	// a sample jwt token with claims `user_id:123` here:
 	_, tokenString, _ := tokenAuth.Encode(jwt.MapClaims{"user_id": 2})
 	log.Printf("DEBUG: a sample jwt is %s\n\n", tokenString)
+
+	globalSessions, _ = session.NewManager("memory","gosessionid",3600)
 }
 
 func Main() {
 	addr := ":3000/v1"
 	fmt.Printf("Starting server on %v\n", addr)
-	http.ListenAndServe(addr, router())
+	http.ListenAndServe(addr, Router())
 }
 
-func router() http.Handler {
+func Router() http.Handler {
 	mux := chi.NewRouter()
 
 	mux.Group(func(r chi.Router) {
@@ -38,14 +41,27 @@ func router() http.Handler {
 		r.Use(jwtauth.Authenticator)
 
 		r.Route("/users", func(r chi.Router) {
-			r.Post("/", handler.CreateUser)
+			r.Post("/", CreateUser)
 
 			r.Route("/{userID}", func(r chi.Router) {
-				r.Get("/", handler.GetUser)
-				r.Put("/", handler.UpdateUser)
-				r.Delete("/", handler.DeleteUser)
+				r.Get("/", GetUser)
+				r.Put("/", UpdateUser)
+				r.Delete("/", DeleteUser)
 			})
 		})
 	})
 	return mux
 }
+
+// func login(w http.ResponseWriter, r *http.Request) {
+// 	sess := globalSessions.SessionStart(w, r)
+// 	r.ParseForm()
+// 	if r.Method == "GET" {
+// 		t, _ := template.ParseFiles("login.gtpl")
+// 		w.Header().Set("Content-Type", "text/html")
+// 		t.Execute(w, sess.Get("username"))
+// 	} else {
+// 		sess.Set("username", r.Form["username"])
+// 		http.Redirect(w, r, "/", 302)
+// 	}
+// }
