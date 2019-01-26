@@ -55,7 +55,7 @@ function formGenerator(type: string) {
           <form className={styles.signForm} onSubmit={handleSubmit}>
             {_.map(Object.keys(props), key => {
               return (
-                <div className={styles.formFields}>
+                <div className={styles.formFields} key={key}>
                   <Field
                     type={`${key}`}
                     name={`${key}`}
