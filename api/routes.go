@@ -5,11 +5,11 @@ import (
 	"log"
 	"net/http"
 
-	jwt "github.com/dgrijalva/jwt-go"
+	// jwt "github.com/dgrijalva/jwt-go"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/jwtauth"
 
-	session "github.com/motonary/Fortuna/api/sessions"
+	"github.com/motonary/Fortuna/api/session"
 )
 
 var tokenAuth *jwtauth.JWTAuth
@@ -20,8 +20,8 @@ func init() {
 
 	// For debugging/example purposes, we generate and print
 	// a sample jwt token with claims `user_id:123` here:
-	_, tokenString, _ := tokenAuth.Encode(jwt.MapClaims{"user_id": 2})
-	log.Printf("DEBUG: a sample jwt is %s\n\n", tokenString)
+	// _, tokenString, _ := tokenAuth.Encode(jwt.MapClaims{"user_id": 2})
+	log.Printf("DEBUG: a sample jwt is %v\n\n", tokenAuth)
 
 	globalSessions, _ = session.NewManager("memory", "gosessionid", 3600)
 }
@@ -35,14 +35,19 @@ func Main() {
 func Router() http.Handler {
 	mux := chi.NewRouter()
 
+	// Authorization not required
 	mux.Group(func(r chi.Router) {
-		// Seek, verify and validate JWT tokens
+		r.Get("/", rootHandler)
+		r.Post("/session", CreateSession)
+		r.Post("/users", CreateUser)
+	})
+
+	// JWT Authorization required
+	mux.Group(func(r chi.Router) {
 		r.Use(jwtauth.Verifier(tokenAuth))
 		r.Use(jwtauth.Authenticator)
 
 		r.Route("/users", func(r chi.Router) {
-			r.Post("/", CreateUser)
-
 			r.Route("/{userID}", func(r chi.Router) {
 				r.Get("/", GetUser)
 				r.Put("/", UpdateUser)
@@ -51,6 +56,10 @@ func Router() http.Handler {
 		})
 	})
 	return mux
+}
+
+func rootHandler(w http.ResponseWriter, r *http.Request) {
+	
 }
 
 // func login(w http.ResponseWriter, r *http.Request) {

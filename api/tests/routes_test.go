@@ -15,7 +15,7 @@ var router *chi.Mux
 
 func TestUnauthorizedRequestHandle(t *testing.T) {
 	w := httptest.NewRecorder()
-	r := httptest.NewRequest("GET", "/users/1", nil)
+	r := httptest.NewRequest("GET", "/users", nil)
 
 	api.Router().ServeHTTP(w, r)
 	rw := w.Result()

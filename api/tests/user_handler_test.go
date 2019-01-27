@@ -1,6 +1,9 @@
 package api
 
 import (
+	"bytes"
+	"encoding/json"
+	// "io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -10,10 +13,28 @@ import (
 	"github.com/go-chi/jwtauth"
 	
 	"github.com/motonary/Fortuna/api"
+	"github.com/motonary/Fortuna/entity"
 )
 
 var tokenAuth *jwtauth.JWTAuth
 var tokenString string
+
+func TestCreateUserHandler(t *testing.T) {
+	userParams := entity.NewUser(0, "ririco", "ririco@example.com", "test")
+	body, _ := json.Marshal(userParams)
+	
+	w := httptest.NewRecorder()
+	r := httptest.NewRequest("POST", "/users",  bytes.NewBuffer(body))
+
+	api.Router().ServeHTTP(w, r)
+
+	rw := w.Result()
+	defer rw.Body.Close()
+
+	if rw.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code : %d", rw.StatusCode)
+	}
+}
 
 func TestGetUserHandlerResponse(t *testing.T) {
 	w := httptest.NewRecorder()
@@ -22,7 +43,6 @@ func TestGetUserHandlerResponse(t *testing.T) {
 
 	api.Router().ServeHTTP(w, r)
 
-	api.GetUser(w, r)
 	rw := w.Result()
 	defer rw.Body.Close()
 
@@ -38,7 +58,6 @@ func TestUpdatetUserHandlerResponse(t *testing.T) {
 
 	api.Router().ServeHTTP(w, r)
 
-	api.UpdateUser(w, r)
 	rw := w.Result()
 	defer rw.Body.Close()
 
@@ -54,7 +73,6 @@ func TestDeleteUserHandlerResponse(t *testing.T) {
 
 	api.Router().ServeHTTP(w, r)
 
-	api.DeleteUser(w, r)
 	rw := w.Result()
 	defer rw.Body.Close()
 

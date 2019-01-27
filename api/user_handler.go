@@ -2,6 +2,8 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -12,17 +14,18 @@ import (
 
 type Response struct {
 	Status int          `json:"status"`
-	User   *entity.User `json:"user", omitempty`
+	User   *entity.User `json:"user,omitempty"`
 }
 
 // POST /users
 func CreateUser(w http.ResponseWriter, r *http.Request) {
-
+	user, errCode := getCreateUserParams(r)
+	fmt.Println(user, errCode)
 }
 
 // GET /users/:id
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	userID, errCode := getUserParams(r)
+	userID, errCode := getAuthorizedUserParams(r)
 	if errCode != http.StatusOK {
 		http.Error(w, http.StatusText(errCode), errCode)
 	}
@@ -38,7 +41,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 // PUT /users/:id
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
-	userID, errCode := getUserParams(r)
+	userID, errCode := getAuthorizedUserParams(r)
 	if errCode != http.StatusOK {
 		http.Error(w, http.StatusText(errCode), errCode)
 	}
@@ -53,7 +56,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 // DELETE /users/:id
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
-	userID, errCode := getUserParams(r)
+	userID, errCode := getAuthorizedUserParams(r)
 	if errCode != http.StatusOK {
 		http.Error(w, http.StatusText(errCode), errCode)
 	}
@@ -88,7 +91,20 @@ func dbDeleteUser(userID int) (*entity.User, int) {
 	return nil, errCode
 }
 
-func getUserParams(r *http.Request) (int, int) {
+func getCreateUserParams(r *http.Request) (*entity.User, error) {
+	var user *entity.User
+	body, _ := ioutil.ReadAll(r.Body)
+	
+	err := json.Unmarshal(body, &user)
+	if err != nil {
+		fmt.Println(err.Error())
+		return nil, err
+	}
+
+	return user, nil
+}
+
+func getAuthorizedUserParams(r *http.Request) (int, int) {
 	var userID int
 
 	_, claims, err := jwtauth.FromContext(r.Context())

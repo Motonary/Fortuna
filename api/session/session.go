@@ -1,15 +1,14 @@
 package session
 
 import (
-	"crypto/rand"
-	"encoding/base64"
 	"fmt"
-	"io"
 	"log"
 	"net/http"
 	"net/url"
 	"sync"
 	"time"
+
+	"github.com/motonary/Fortuna/pkg/crypto"
 )
 
 type Manager struct {
@@ -59,7 +58,7 @@ func (manager *Manager) SessionStart(w http.ResponseWriter, r *http.Request) (se
 	defer manager.lock.Unlock()
 	cookie, err := r.Cookie(manager.cookieName)
 	if err != nil || cookie.Value == "" {
-		sid := manager.sessionId()
+		sid := manager.sessionID()
 		session, _ = manager.provider.SessionInit(sid)
 		cookie := http.Cookie{Name: manager.cookieName, Value: url.QueryEscape(sid), Path: "/", HttpOnly: true, MaxAge: int(manager.maxlifetime)}
 		http.SetCookie(w, &cookie)
@@ -92,10 +91,6 @@ func (manager *Manager) GC() {
 	time.AfterFunc(time.Duration(manager.maxlifetime), func() { manager.GC() })
 }
 
-func (manager *Manager) sessionId() string {
-	b := make([]byte, 32)
-	if _, err := io.ReadFull(rand.Reader, b); err != nil {
-		return ""
-	}
-	return base64.URLEncoding.EncodeToString(b)
+func (manager *Manager) sessionID() string {
+	return crypto.LongSecureRandomBase64()
 }
