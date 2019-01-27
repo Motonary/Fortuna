@@ -1,14 +1,17 @@
-import React from 'react'
-import { Field, Formik, ErrorMessage } from 'formik'
+import * as React from 'react'
+import { connect } from 'react-redux'
+import { Field, Formik, ErrorMessage, FormikActions } from 'formik'
 import _ from 'lodash'
 
 import Button from '../../atoms/Button'
 
 import styles from './style.css'
 
-import { FormValues } from './form-types'
+import { CreateUserValues, CreateSessionValues } from './form-types'
 
-function validate(values: any) {
+import { createUser } from '../../../actions/users'
+
+const validate = (values: any) => {
   let errors: any
 
   if (!values.username) {
@@ -35,25 +38,36 @@ function validate(values: any) {
   return errors
 }
 
-function submit(values: FormValues, actions: any) {
-  // submit actions
+const submitSignUp = (values: CreateUserValues, actions: FormikActions<CreateUserValues>) => {
+  createUser(values.email, values.password, '', '')
+    .then(() => actions.setSubmitting(false))
+    .catch(() => actions.setSubmitting(false))
+}
+
+const submitSignIn = (values: CreateSessionValues, actions: FormikActions<CreateSessionValues>) => {
   // this.props
   //   .createSession(values.email, values.password)
   //   .then(() => actions.setSubmitting(false))
   //   .catch(() => actions.setSubmitting(false))
 }
 
-const formGenerator = (type: string) => {
-  return ({ ...props }: any) => (
+const formGenerator = (type: 'signin' | 'signup') => {
+  // const submitSignUp = (values: CreateUserValues, actions: FormikActions<CreateUserValues>) => {
+  //   createUser(values.email, values.password, '', '')
+  //     .then(() => actions.setSubmitting(false))
+  //     .catch(() => actions.setSubmitting(false))
+  // }
+
+  return ({ createUser, ...rest }: any) => (
     <div id={styles.formContainer}>
       <h1 id={styles.formName}>{type.toUpperCase()}</h1>
       <Formik
-        initialValues={{ ...props }}
+        initialValues={{ ...rest }}
         validate={validate}
-        onSubmit={submit}
+        onSubmit={type === 'signup' ? submitSignUp : submitSignIn}
         render={({ handleSubmit, isSubmitting }) => (
           <form className={styles.signForm} onSubmit={handleSubmit}>
-            {_.map(Object.keys(props), key => {
+            {_.map(Object.keys(rest), key => {
               return (
                 <div className={styles.formFields} key={key}>
                   <Field
@@ -76,5 +90,11 @@ const formGenerator = (type: string) => {
   )
 }
 
-export const SignInForm = formGenerator('signin')
-export const SignUpForm = formGenerator('signup')
+// export const SignInForm = connect(
+//   null,
+//   { createSession }
+// )(formGenerator('signin'))
+export const SignUpForm = connect(
+  null,
+  { createUser }
+)(formGenerator('signup'))

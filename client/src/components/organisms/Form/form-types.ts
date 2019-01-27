@@ -1,13 +1,11 @@
-interface CreateUserValues {
+export interface CreateUserValues {
   username: string
   email: string
   password: string
   confirmation: string
 }
 
-interface CreateSessionValues {
+export interface CreateSessionValues {
   email: string
   password: string
 }
-
-export type FormValues = CreateUserValues | CreateSessionValues
