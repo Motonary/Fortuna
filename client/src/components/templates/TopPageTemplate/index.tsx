@@ -1,15 +1,23 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
 import { SignInForm, SignUpForm } from '../../organisms/Form'
 
-// interface TopPageTemplateProps {
-// }
+import { createUser, createSession } from '../../../actions/users'
 
-const TopPageTemplate: React.SFC = () => (
+interface TopPageTemplateProps {
+  createUser: Function
+  createSession: Function
+}
+
+const TopPageTemplate: React.FC<TopPageTemplateProps> = ({ createSession, createUser }) => (
   <div>
-    <SignInForm email="" password="" />
-    <SignUpForm name="" email="" password="" confirmation="" />
+    <SignInForm actionFunc={createSession} email="" password="" />
+    <SignUpForm actionFunc={createUser} name="" email="" password="" confirmation="" />
   </div>
 )
 
-export default TopPageTemplate
+export default connect(
+  null,
+  { createUser, createSession }
+)(TopPageTemplate)

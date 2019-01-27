@@ -35,22 +35,22 @@ function validate(values: any) {
   return errors
 }
 
-function submit(values: FormValues, actions: any) {
-  // submit actions
-  // this.props
-  //   .createSession(values.email, values.password)
-  //   .then(() => actions.setSubmitting(false))
-  //   .catch(() => actions.setSubmitting(false))
+function submitHof(actionFunc: Function) {
+  return function submit(values: FormValues, actions: any) {
+    actionFunc({ ...values })
+      .then(() => actions.setSubmitting(false))
+      .catch(() => actions.setSubmitting(false))
+  }
 }
 
 function formGenerator(type: string) {
-  return ({ ...props }: any) => (
+  return ({ actionFunc, ...props }: any) => (
     <div id={styles.formContainer}>
       <h1 id={styles.formName}>{type.toUpperCase()}</h1>
       <Formik
         initialValues={{ ...props }}
         validate={validate}
-        onSubmit={submit}
+        onSubmit={submitHof(actionFunc)}
         render={({ handleSubmit, isSubmitting }) => (
           <form className={styles.signForm} onSubmit={handleSubmit}>
             {_.map(Object.keys(props), key => {
