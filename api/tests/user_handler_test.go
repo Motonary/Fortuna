@@ -14,14 +14,13 @@ import (
 
 var tokenAuth *jwtauth.JWTAuth
 var tokenString string
-var mux *http.Handler
 
 func TestGetUserHandlerResponse(t *testing.T) {
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest("GET", "/users/2", nil)
 	r.Header.Set("Authorization", "Bearer "+tokenString)
 
-	mux.ServeHTTP(w, r)
+	api.Router().ServeHTTP(w, r)
 
 	api.GetUser(w, r)
 	rw := w.Result()
@@ -37,7 +36,7 @@ func TestUpdatetUserHandlerResponse(t *testing.T) {
 	r := httptest.NewRequest("PUT", "/users/2", nil)
 	r.Header.Set("Authorization", "Bearer "+tokenString)
 
-	mux.ServeHTTP(w, r)
+	api.Router().ServeHTTP(w, r)
 
 	api.UpdateUser(w, r)
 	rw := w.Result()
@@ -53,7 +52,7 @@ func TestDeleteUserHandlerResponse(t *testing.T) {
 	r := httptest.NewRequest("DELETE", "/users/2", nil)
 	r.Header.Set("Authorization", "Bearer "+tokenString)
 
-	mux.ServeHTTP(w, r)
+	api.Router().ServeHTTP(w, r)
 
 	api.DeleteUser(w, r)
 	rw := w.Result()
@@ -68,23 +67,6 @@ func setup() {
 	println("setup")
 	tokenAuth = jwtauth.New("HS256", []byte("secret"), nil)
 	_, tokenString, _ = tokenAuth.Encode(jwt.MapClaims{"user_id": 1})
-	
-	mux = api.Router()
-
-	// mux.Group(func(r chi.Router) {
-	// 	r.Route("/users", func(r chi.Router) {
-	// 		r.Use(jwtauth.Verifier(tokenAuth))
-	// 		r.Use(jwtauth.Authenticator)
-
-	// 		r.Post("/", CreateUser)
-
-	// 		r.Route("/{userID}", func(r chi.Router) {
-	// 			r.Get("/", GetUser)
-	// 			r.Put("/", UpdateUser)
-	// 			r.Delete("/", DeleteUser)
-	// 		})
-	// 	})
-	// })
 }
 
 func teardown() {

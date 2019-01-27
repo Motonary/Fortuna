@@ -23,7 +23,7 @@ func init() {
 	_, tokenString, _ := tokenAuth.Encode(jwt.MapClaims{"user_id": 2})
 	log.Printf("DEBUG: a sample jwt is %s\n\n", tokenString)
 
-	globalSessions, _ = session.NewManager("memory","gosessionid",3600)
+	globalSessions, _ = session.NewManager("memory", "gosessionid", 3600)
 }
 
 func Main() {

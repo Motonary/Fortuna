@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/motonary/Fortuna/api"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -16,7 +17,7 @@ func TestUnauthorizedRequestHandle(t *testing.T) {
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest("GET", "/users/1", nil)
 
-	router.ServeHTTP(w, r)
+	api.Router().ServeHTTP(w, r)
 	rw := w.Result()
 	defer rw.Body.Close()
 
@@ -37,7 +38,7 @@ func TestAuthorizedRequestHandle(t *testing.T) {
 
 	t.Logf("Header : %s \n", r.Header)
 
-	router.ServeHTTP(w, r)
+	api.Router().ServeHTTP(w, r)
 	rw := w.Result()
 	defer rw.Body.Close()
 
