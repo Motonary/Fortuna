@@ -8,7 +8,11 @@ import { SignInForm, SignUpForm } from '../../organisms/Form'
 const TopPageTemplate: React.SFC = () => (
   <div>
     <SignInForm email="" password="" />
-    <SignUpForm name="" email="" password="" confirmation="" />
+    {/* <SignUpForm name="" email="" password="" confirmation="" /> */}
+    <div style={{ textAlign: 'center' }}>
+      <div>Successfully created.</div>
+      <div>User: hoge</div>
+    </div>
   </div>
 )
 

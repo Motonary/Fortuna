@@ -43,7 +43,7 @@ function submit(values: FormValues, actions: any) {
   //   .catch(() => actions.setSubmitting(false))
 }
 
-function formGenerator(type: string) {
+const formGenerator = (type: string) => {
   return ({ ...props }: any) => (
     <div id={styles.formContainer}>
       <h1 id={styles.formName}>{type.toUpperCase()}</h1>
