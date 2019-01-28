@@ -38,33 +38,22 @@ const validate = (values: any) => {
   return errors
 }
 
-const submitSignUp = (values: CreateUserValues, actions: FormikActions<CreateUserValues>) => {
-  createUser(values.email, values.password, '', '')
-    .then(() => actions.setSubmitting(false))
-    .catch(() => actions.setSubmitting(false))
+function submitHof(actionFunc: Function) {
+  return function submit(values: FormValues, actions: any) {
+    actionFunc({ ...values })
+      .then(() => actions.setSubmitting(false))
+      .catch(() => actions.setSubmitting(false))
+  }
 }
 
-const submitSignIn = (values: CreateSessionValues, actions: FormikActions<CreateSessionValues>) => {
-  // this.props
-  //   .createSession(values.email, values.password)
-  //   .then(() => actions.setSubmitting(false))
-  //   .catch(() => actions.setSubmitting(false))
-}
-
-const formGenerator = (type: 'signin' | 'signup') => {
-  // const submitSignUp = (values: CreateUserValues, actions: FormikActions<CreateUserValues>) => {
-  //   createUser(values.email, values.password, '', '')
-  //     .then(() => actions.setSubmitting(false))
-  //     .catch(() => actions.setSubmitting(false))
-  // }
-
-  return ({ createUser, ...rest }: any) => (
+function formGenerator(type: string) {
+  return ({ actionFunc, ...props }: any) => (
     <div id={styles.formContainer}>
       <h1 id={styles.formName}>{type.toUpperCase()}</h1>
       <Formik
         initialValues={{ ...rest }}
         validate={validate}
-        onSubmit={type === 'signup' ? submitSignUp : submitSignIn}
+        onSubmit={submitHof(actionFunc)}
         render={({ handleSubmit, isSubmitting }) => (
           <form className={styles.signForm} onSubmit={handleSubmit}>
             {_.map(Object.keys(rest), key => {
