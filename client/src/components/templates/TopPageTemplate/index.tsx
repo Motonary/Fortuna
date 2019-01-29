@@ -1,8 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-// import { SignInForm, SignUpForm } from '../../organisms/Form'
-import { SignUpForm } from '../../organisms/Form'
+import { SignInForm, SignUpForm } from '../../organisms/Form'
 
 import { createUser, createSession } from '../../../actions/users'
 

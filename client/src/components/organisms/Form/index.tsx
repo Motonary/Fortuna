@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
 import { Field, Formik, ErrorMessage, FormikActions } from 'formik'
 import _ from 'lodash'
 
@@ -7,47 +6,48 @@ import Button from '../../atoms/Button'
 
 import styles from './style.css'
 
-import { CreateUserValues, CreateSessionValues } from './form-types'
+import { FormValues, FormErrors } from './form-types'
 
-import { createUser } from '../../../actions/users'
-
-const validate = (values: any) => {
+const validate = (values: FormValues): FormErrors => {
   let errors: any
-
-  if (!values.username) {
-    errors.username = 'Username required'
-  } else if (values.username && values.username.length > 50) {
-    errors.username = 'Too long username'
-  }
 
   if (!values.email) {
     errors.email = 'Required'
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
     errors.email = 'Invalid email address'
   }
+
   if (!values.password) {
     errors.password = 'Required'
   }
 
-  if (!values.confirmation) {
-    errors.confirmation = 'Password confirmation required'
-  } else if (values.password !== values.confirmation) {
-    errors.confirmation = 'Not match password'
+  if ('username' in values && 'confirmation' in values) {
+    if (!values.confirmation) {
+      errors.confirmation = 'Password confirmation required'
+    } else if (values.password !== values.confirmation) {
+      errors.confirmation = 'Not match password'
+    }
+
+    if (!values.username) {
+      errors.username = 'Username required'
+    } else if (values.username && values.username.length > 50) {
+      errors.username = 'Too long username'
+    }
   }
 
   return errors
 }
 
-function submitHof(actionFunc: Function) {
-  return function submit(values: FormValues, actions: any) {
+const submitHof = (actionFunc: Function) => {
+  return function submit(values: FormValues, actions: FormikActions<FormValues>) {
     actionFunc({ ...values })
       .then(() => actions.setSubmitting(false))
       .catch(() => actions.setSubmitting(false))
   }
 }
 
-function formGenerator(type: string) {
-  return ({ actionFunc, ...props }: any) => (
+const formGenerator = (type: string): Function => {
+  return ({ actionFunc, ...rest }: any) => (
     <div id={styles.formContainer}>
       <h1 id={styles.formName}>{type.toUpperCase()}</h1>
       <Formik
@@ -79,11 +79,5 @@ function formGenerator(type: string) {
   )
 }
 
-// export const SignInForm = connect(
-//   null,
-//   { createSession }
-// )(formGenerator('signin'))
-export const SignUpForm = connect(
-  null,
-  { createUser }
-)(formGenerator('signup'))
+export const SignInForm = formGenerator('signin')
+export const SignUpForm = formGenerator('signup')
