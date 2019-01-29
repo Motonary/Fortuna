@@ -6,8 +6,9 @@ import Button from '../../atoms/Button'
 
 import styles from './style.css'
 
-import { FormValues, FormErrors } from './form-types'
+import { FormValues, FormErrors, SubmitHofType, FormGeneratorType, FormType } from './types'
 
+// TODO: バリデーション整備
 const validate = (values: FormValues): FormErrors => {
   let errors: any
 
@@ -38,7 +39,7 @@ const validate = (values: FormValues): FormErrors => {
   return errors
 }
 
-const submitHof = (actionFunc: Function) => {
+const submitHof = (actionFunc: Function): SubmitHofType => {
   return function submit(values: FormValues, actions: FormikActions<FormValues>) {
     actionFunc({ ...values })
       .then(() => actions.setSubmitting(false))
@@ -46,8 +47,9 @@ const submitHof = (actionFunc: Function) => {
   }
 }
 
-const formGenerator = (type: string): Function => {
-  return ({ actionFunc, ...rest }: any) => (
+const formGenerator = (type: string): FormGeneratorType => {
+  // オブジェクトの可変長性に型をつけることができないのでanyを許容
+  return ({ actionFunc, ...rest }: { actionFunc: Function } & any) => (
     <div id={styles.formContainer}>
       <h1 id={styles.formName}>{type.toUpperCase()}</h1>
       <Formik
@@ -79,5 +81,6 @@ const formGenerator = (type: string): Function => {
   )
 }
 
-export const SignInForm = formGenerator('signin')
-export const SignUpForm = formGenerator('signup')
+// NOTE: propsに型がついていないので、変なpropsが紛れ込んでも検知できない。
+export const SignInForm: FormType = formGenerator('signin')
+export const SignUpForm: FormType = formGenerator('signup')

@@ -1,3 +1,6 @@
+import { FormikActions } from 'formik'
+
+// Form values
 interface CreateUserValues {
   username: string
   email: string
@@ -18,3 +21,10 @@ export interface FormErrors {
   password?: 'Required'
   confirmation?: 'Password confirmation required' | 'Not match password'
 }
+
+// Functions
+export type SubmitHofType = ((values: FormValues, actions: FormikActions<FormValues>) => void)
+
+export type FormGeneratorType = (type: string) => JSX.Element
+
+export type FormType = ({ actionFunc, ...rest }: { actionFunc: Function } & any) => JSX.Element
