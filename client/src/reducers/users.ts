@@ -2,7 +2,7 @@ import { actionTypes } from '../constants/action-types'
 import { SwitchIsLoadingAction, CurrentUserAction } from '../actions/users'
 
 // TODO: stateの型付け厳格に
-export function currentUser(state: Object = {}, action: CurrentUserAction) {
+export function currentUser(state: any = {}, action: CurrentUserAction) {
   switch (action.type) {
     case actionTypes.SET_CURRENT_USER:
       if ('currentUser' in action.payload) {
@@ -27,7 +27,7 @@ export function currentUser(state: Object = {}, action: CurrentUserAction) {
   }
 }
 
-export function IsLoadingCurrentUser(state: boolean = false, action: SwitchIsLoadingAction) {
+export function isLoadingCurrentUser(state: boolean = false, action: SwitchIsLoadingAction) {
   switch (action.type) {
     case actionTypes.CURRENT_USER_SET_IS_LOADING:
       return action.payload.isLoading

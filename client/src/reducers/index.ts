@@ -1,9 +1,12 @@
 import { combineReducers } from 'redux'
-import { currentUser } from './user'
+import { currentUser, isLoadingCurrentUser } from './users'
 
 const rootReducer = combineReducers({
   // Users
   currentUser,
+
+  // Loading
+  isLoadingCurrentUser,
 })
 
 export default rootReducer
