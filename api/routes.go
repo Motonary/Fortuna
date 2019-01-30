@@ -36,16 +36,3 @@ func httpErrCheck(w http.ResponseWriter, err error, statusCode int) {
 	log.Println(err)
 	http.Error(w, http.StatusText(statusCode), statusCode)
 }
-
-// func login(w http.ResponseWriter, r *http.Request) {
-// 	sess := globalSessions.SessionStart(w, r)
-// 	r.ParseForm()
-// 	if r.Method == "GET" {
-// 		t, _ := template.ParseFiles("login.gtpl")
-// 		w.Header().Set("Content-Type", "text/html")
-// 		t.Execute(w, sess.Get("username"))
-// 	} else {
-// 		sess.Set("username", r.Form["username"])
-// 		http.Redirect(w, r, "/", 302)
-// 	}
-// }
