@@ -1,5 +1,5 @@
 import { FormikActions } from 'formik'
-import { CurrentUserActionType, SessionActionType } from '../../../actions/users'
+import { CurrentUserThunkActionType } from '../../../actions/users'
 
 // Form values
 interface CreateUserValues {
@@ -28,8 +28,6 @@ export type SubmitHofType = ((values: FormValues, actions: FormikActions<FormVal
 
 export type FormGeneratorType = (type: string) => JSX.Element
 
-export type ActionFuncType = CurrentUserActionType | SessionActionType
-
 export type FormType = (
-  { actionFunc, ...rest }: { actionFunc: ActionFuncType } & any
+  { actionFunc, ...rest }: { actionFunc: CurrentUserThunkActionType } & any
 ) => JSX.Element

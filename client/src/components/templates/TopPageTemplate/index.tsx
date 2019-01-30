@@ -7,7 +7,7 @@ import {
   createUser,
   createSession,
   // TODO: Functionに型付け
-  // CurrentUserActionType,
+  // CurrentUserThunkActionType,
   // SessionActionType,
 } from '../../../actions/users'
 
