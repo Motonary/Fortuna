@@ -3,7 +3,7 @@ import { CurrentUserActionType, SessionActionType } from '../../../actions/users
 
 // Form values
 interface CreateUserValues {
-  username: string
+  name: string
   email: string
   password: string
   confirmation: string
@@ -16,8 +16,8 @@ interface CreateSessionValues {
 
 export type FormValues = CreateSessionValues | CreateUserValues
 
-export interface FormErrors {
-  username?: 'Username required' | 'Too long username'
+export interface FormErrorMsgs {
+  name?: 'Username required' | 'Too long username'
   email?: 'Required' | 'Invalid email address'
   password?: 'Required'
   confirmation?: 'Password confirmation required' | 'Not match password'

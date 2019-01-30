@@ -6,11 +6,11 @@ import Button from '../../atoms/Button'
 
 import styles from './style.css'
 
-import { FormValues, FormErrors, SubmitHofType, FormGeneratorType, FormType } from './types'
+import { FormValues, FormErrorMsgs, SubmitHofType, FormGeneratorType, FormType } from './types'
 
 // TODO: バリデーション整備
-const validate = (values: FormValues): FormErrors => {
-  let errors: any
+const validate = (values: FormValues): FormErrorMsgs => {
+  let errors: any = {}
 
   if (!values.email) {
     errors.email = 'Required'
@@ -22,17 +22,17 @@ const validate = (values: FormValues): FormErrors => {
     errors.password = 'Required'
   }
 
-  if ('username' in values && 'confirmation' in values) {
+  if ('name' in values && 'confirmation' in values) {
     if (!values.confirmation) {
       errors.confirmation = 'Password confirmation required'
     } else if (values.password !== values.confirmation) {
       errors.confirmation = 'Not match password'
     }
 
-    if (!values.username) {
-      errors.username = 'Username required'
-    } else if (values.username && values.username.length > 50) {
-      errors.username = 'Too long username'
+    if (!values.name) {
+      errors.name = 'Username required'
+    } else if (values.name && values.name.length > 50) {
+      errors.name = 'Too long name'
     }
   }
 
@@ -53,24 +53,22 @@ const formGenerator = (type: string): FormGeneratorType => {
     <div id={styles.formContainer}>
       <h1 id={styles.formName}>{type.toUpperCase()}</h1>
       <Formik
-        initialValues={{ ...rest }}
+        initialValues={rest}
         validate={validate}
         onSubmit={submitHof(actionFunc)}
         render={({ handleSubmit, isSubmitting }) => (
           <form className={styles.signForm} onSubmit={handleSubmit}>
-            {_.map(Object.keys(rest), key => {
-              return (
-                <div className={styles.formFields} key={key}>
-                  <Field
-                    type={`${key}`}
-                    name={`${key}`}
-                    placeholder={`${key}`}
-                    className={styles.formField}
-                  />
-                  <ErrorMessage name={`${key}`}>{msg => <div>{msg}</div>}</ErrorMessage>
-                </div>
-              )
-            })}
+            {_.map(Object.keys(rest), key => (
+              <div className={styles.formFields} key={key}>
+                <Field
+                  type={`${key}`}
+                  name={`${key}`}
+                  placeholder={`${key}`}
+                  className={styles.formField}
+                />
+                <ErrorMessage component="span" name={`${key}`} />
+              </div>
+            ))}
             <Button type="submit" style="form" disabled={isSubmitting}>
               Submit
             </Button>
