@@ -1,70 +1,21 @@
 import { actionTypes } from '../constants/action-types'
-import { CurrentUserAction } from '../actions/users'
+// import { CurrentUserAction } from '../actions/users'
 
-export function currentUser(state: any = null, action: CurrentUserAction) {
+export function currentUser(state: any = null, action: any) {
   switch (action.type) {
-    case actionTypes.USER_API_REQUEST:
-      return [
-        ...state,
-        {
-          isLoading: true,
-          items: [],
-        },
-      ]
+    case actionTypes.SET_CURRENT_USER:
+    case actionTypes.UPDATE_CURRENT_USER:
+      return action.payload.currentUser
 
-    case actionTypes.USER_API_SUCCESS:
-      return [
-        ...state,
-        {
-          isLoading: false,
-          items: action.payload.currentUser,
-        },
-      ]
+    default:
+      return state
+  }
+}
 
-    case actionTypes.USER_API_FAILURE:
-      return [
-        ...state,
-        {
-          isLoading: false,
-          items: action.payload.error,
-        },
-      ]
-
-    case actionTypes.SESSION_API_REQUEST:
-      return [
-        ...state,
-        {
-          isLoading: true,
-          items: [],
-        },
-      ]
-
-    case actionTypes.SESSION_API_SUCCESS:
-      return [
-        ...state,
-        {
-          isLoading: false,
-          items: action.payload.currentUser,
-        },
-      ]
-
-    case actionTypes.SESSION_DELETE_SUCCESS:
-      return [
-        ...state,
-        {
-          isLoading: false,
-          items: null,
-        },
-      ]
-
-    case actionTypes.SESSION_API_FAILURE:
-      return [
-        ...state,
-        {
-          isLoading: false,
-          items: action.payload.error,
-        },
-      ]
+export function IsLoadingCurrentUser(state: boolean = false, action: any) {
+  switch (action.type) {
+    case actionTypes.CURRENT_USER_SET_IS_LOADING:
+      return action.payload.isLoading
 
     default:
       return state

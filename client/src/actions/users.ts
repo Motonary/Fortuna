@@ -9,84 +9,65 @@ import { ROOT_URL } from '../constants/url'
 // -------------------------------------------------------------------------------------
 // CurrentUser
 // -------------------------------------------------------------------------------------
+export type CurrentUserActionType = ThunkAction<Promise<void>, {}, {}, AnyAction>
 
-interface UserApiRequest extends BaseAction {
-  type: string
-}
-
-interface UserApiSuccess extends BaseAction {
-  type: string
-  payload: { currentUser: Object }
-}
-
-interface UserApiFailure extends BaseAction {
-  type: string
-  payload: { error: any }
-}
-
-export type CurrentUserAction = UserApiRequest | UserApiSuccess | UserApiFailure | SessionAction
-
-export type CurrentUserActionType = ThunkAction<
-  Promise<CurrentUserAction | void>,
-  {},
-  {},
-  AnyAction
->
-
-const userApiRequest = () => {
+const switchIsLoading = (isLoading: boolean) => {
   return {
-    type: actionTypes.USER_API_REQUEST,
-  }
-}
-
-const userApiSuccess = (json: Object) => {
-  return {
-    type: actionTypes.USER_API_SUCCESS,
-    payload: { currentUser: json },
-  }
-}
-
-const userApiFailure = (error: any) => {
-  return {
-    type: actionTypes.USER_API_FAILURE,
-    payload: { error },
+    type: actionTypes.CURRENT_USER_SET_IS_LOADING,
+    isLoading,
   }
 }
 
 export const createUser = (
   name: string,
   email: string,
-  password: string,
-  password_confirmation: string
+  password: string
 ): CurrentUserActionType => {
-  return (dispatch: ThunkDispatch<{}, {}, CurrentUserAction>) => {
-    dispatch(userApiRequest())
+  return (dispatch: ThunkDispatch<{}, {}, any>) => {
+    dispatch(switchIsLoading(true))
     return axios
       .post(`${ROOT_URL}/api/v1/users`, {
-        user: { name, email, password, password_confirmation },
+        user: { name, email, password },
       })
-      .then(res => dispatch(userApiSuccess(res.data)))
-      .catch(err => dispatch(userApiFailure(err)))
+      .then(res => {
+        dispatch({
+          type: actionTypes.SET_CURRENT_USER,
+          payload: { currentUser: res.data },
+        })
+        dispatch(switchIsLoading(false))
+      })
+      .catch(err => {
+        alert(err) // 暫定処理
+        dispatch(switchIsLoading(false))
+      })
   }
 }
 
 export const updateUser = (
   name: string,
   email: string,
-  password: string,
-  password_confirmation: string
+  password: string
 ): CurrentUserActionType => {
-  return (dispatch: ThunkDispatch<{}, {}, CurrentUserAction>) => {
-    dispatch(userApiRequest())
+  return (dispatch: ThunkDispatch<{}, {}, any>) => {
+    dispatch(switchIsLoading(true))
     return axios({
       method: 'put',
       // TODO:RESTfulなURLを考慮
       url: `${ROOT_URL}/api/v1/users/`,
-      data: { user: { name, email, password, password_confirmation } },
+      data: { user: { name, email, password } },
       headers: { Authorization: `Bearer ${sessionStorage.getItem('jwt')}` },
     })
-      .then(res => dispatch(userApiSuccess(res.data)))
-      .catch(err => dispatch(userApiFailure(err)))
+      .then(res => {
+        dispatch({
+          type: actionTypes.UPDATE_CURRENT_USER,
+          payload: { currentUser: res.data },
+        })
+        dispatch(switchIsLoading(false))
+      })
+      .catch(err => {
+        alert(err)
+        dispatch(switchIsLoading(false))
+      })
   }
 }
 
@@ -94,7 +75,7 @@ export const updateUser = (
 // UserSession (CurrentUser)
 // -------------------------------------------------------------------------------------
 
-// interface
+// TODO: CreateUserと同様に修正(@https://github.com/Motonary/Fortuna/pull/72)
 interface SessionApiRequest extends BaseAction {
   type: string
 }
