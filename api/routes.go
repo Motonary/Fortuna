@@ -1,28 +1,12 @@
 package api
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/jwtauth"
 )
-
-var (
-	tokenAuth *jwtauth.JWTAuth
-	tokenString string
-)
-
-func init() {
-	tokenAuth = jwtauth.New("HS256", []byte("secret"), nil)
-}
-
-func Main() {
-	addr := ":3000/api/v1"
-	fmt.Printf("Starting server on %v\n", addr)
-	http.ListenAndServe(addr, Router())
-}
 
 func Router() http.Handler {
 	mux := chi.NewRouter()
