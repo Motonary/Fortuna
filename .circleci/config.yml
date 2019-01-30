@@ -20,7 +20,7 @@ jobs:
     ####   /go/src/bitbucket.org/circleci/go-tool
     working_directory: /go/src/github.com/motonary/Fortuna
     steps:
-      # - run: echo 'export PATH=${GOPATH}/bin/:${PATH}' >> $BASH_ENV
+      - run: echo 'export PATH=${GOPATH}/bin/:${PATH}' >> $BASH_ENV
       - checkout
       - run: go get -v -t -d ./...
       - run: go vet ./...
