@@ -17,6 +17,7 @@ func init() {
 }
 
 func main() {
+	// TODO: 環境によって分岐させる
 	addr := ":3000/api/v1"
 	log.Printf("Starting server on %v\n", addr)
 	http.ListenAndServe(addr, Router())
