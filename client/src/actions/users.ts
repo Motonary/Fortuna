@@ -39,7 +39,7 @@ const userApiRequest = () => {
   }
 }
 
-const userApiSuccess = (json: any) => {
+const userApiSuccess = (json: Object) => {
   return {
     type: actionTypes.USER_API_SUCCESS,
     payload: { currentUser: json },

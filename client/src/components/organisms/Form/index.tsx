@@ -60,18 +60,14 @@ const formGenerator = (type: string): FormGeneratorType => {
           <form className={styles.signForm} onSubmit={handleSubmit}>
             {_.map(Object.keys(rest), key => (
               <div className={styles.formFields} key={key}>
-                <Field
-                  type={`${key}`}
-                  name={`${key}`}
-                  placeholder={`${key}`}
-                  className={styles.formField}
-                />
-                <ErrorMessage component="span" name={`${key}`} />
+                <Field type={key} name={key} placeholder={key} className={styles.formField} />
+                <ErrorMessage component="div" name={key} />
               </div>
             ))}
             <Button type="submit" style="form" disabled={isSubmitting}>
               Submit
             </Button>
+            <div />
           </form>
         )}
       />
