@@ -2,11 +2,12 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
+	"errors"
 	"io/ioutil"
 	"log"
 	"net/http"
 
+	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/go-chi/jwtauth"
 
 	"github.com/motonary/Fortuna/entity"
@@ -15,80 +16,97 @@ import (
 type Response struct {
 	Status int          `json:"status"`
 	User   *entity.User `json:"user,omitempty"`
+	Token  string       `json:"token,omitempty"`
 }
 
 // POST /users
 func CreateUser(w http.ResponseWriter, r *http.Request) {
-	user, errCode := getCreateUserParams(r)
-	fmt.Println(user, errCode)
+	user, err := getCreateUserParams(r)
+	if err != nil {
+		httpErrCheck(w, err, http.StatusInternalServerError)
+	}
+
+	err = dbCreateUser(user)
+	if err != nil {
+		httpErrCheck(w, err, http.StatusInternalServerError)
+	}
+	_, tokenString, _ = tokenAuth.Encode(jwt.MapClaims{"user_id": user.ID})
+
+	response := Response{http.StatusOK, user, tokenString}
+	jsonResponse(w, response)
 }
 
 // GET /users/:id
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	userID, errCode := getAuthorizedUserParams(r)
-	if errCode != http.StatusOK {
-		http.Error(w, http.StatusText(errCode), errCode)
+	userID, err := getAuthorizedUserParams(r)
+	if err != nil {
+		httpErrCheck(w, err, http.StatusUnauthorized)
 	}
 
 	user, err := dbGetUser(userID)
 	if err != nil {
-		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		httpErrCheck(w, err, http.StatusBadRequest)
 	}
-
-	response := Response{http.StatusOK, user}
+	
+	response := Response{http.StatusOK, user, ""}
 	jsonResponse(w, response)
 }
 
 // PUT /users/:id
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
-	userID, errCode := getAuthorizedUserParams(r)
-	if errCode != http.StatusOK {
-		http.Error(w, http.StatusText(errCode), errCode)
-	}
-	user, errCode := dbUpdateUser(userID)
-	if errCode != http.StatusOK {
-		http.Error(w, http.StatusText(errCode), errCode)
+	userID, err := getAuthorizedUserParams(r)
+	if err != nil {
+		httpErrCheck(w, err, http.StatusUnauthorized)
 	}
 
-	response := Response{http.StatusOK, user}
+	user, err := dbUpdateUser(userID)
+	if err != nil {
+		httpErrCheck(w, err, http.StatusInternalServerError)
+	}
+
+	response := Response{http.StatusOK, user, ""}
 	jsonResponse(w, response)
 }
 
 // DELETE /users/:id
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
-	userID, errCode := getAuthorizedUserParams(r)
-	if errCode != http.StatusOK {
-		http.Error(w, http.StatusText(errCode), errCode)
-	}
-	user, errCode := dbDeleteUser(userID)
-	if errCode != http.StatusOK {
-		http.Error(w, http.StatusText(errCode), errCode)
+	userID, err := getAuthorizedUserParams(r)
+	if err != nil {
+		httpErrCheck(w, err, http.StatusUnauthorized)
 	}
 
-	response := Response{http.StatusOK, user}
+	err = dbDeleteUser(userID)
+	if err != nil {
+		httpErrCheck(w, err, http.StatusInternalServerError)
+	}
+
+	response := Response{http.StatusOK, nil, ""}
 	jsonResponse(w, response)
+}
+
+func dbCreateUser(user *entity.User) error {
+	entity.NewUser(user.ID, user.Name, user.Email, user.Password)
+	return nil
 }
 
 func dbGetUser(userID int) (*entity.User, error) {
 	return entity.NewUser(userID, "ririco", "ririco@example.com", "test"), nil
 }
 
-func dbUpdateUser(userID int) (*entity.User, int) {
-	var errCode int
-	_, err := entity.UpdateUser(userID)
-	if err {
-		errCode = http.StatusInternalServerError
+func dbUpdateUser(userID int) (*entity.User, error) {
+	user, err := entity.UpdateUser(userID)
+	if err != nil {
+		return nil, err
 	}
-	return nil, errCode
+	return user, nil
 }
 
-func dbDeleteUser(userID int) (*entity.User, int) {
-	var errCode int
+func dbDeleteUser(userID int) error {
 	_, err := entity.DeleteUser(userID)
-	if err {
-		errCode = http.StatusInternalServerError
+	if err != nil {
+		return err
 	}
-	return nil, errCode
+	return nil
 }
 
 func getCreateUserParams(r *http.Request) (*entity.User, error) {
@@ -97,34 +115,35 @@ func getCreateUserParams(r *http.Request) (*entity.User, error) {
 	
 	err := json.Unmarshal(body, &user)
 	if err != nil {
-		fmt.Println(err.Error())
 		return nil, err
 	}
+
+	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
+	log.Printf("response : %v\n", string(body))
 
 	return user, nil
 }
 
-func getAuthorizedUserParams(r *http.Request) (int, int) {
+func getAuthorizedUserParams(r *http.Request) (int, error) {
 	var userID int
 
 	_, claims, err := jwtauth.FromContext(r.Context())
-	statusCode := http.StatusOK
 	if err != nil {
-		statusCode = http.StatusUnauthorized
+		return 0, err
 	}
 	// 以下のエラーが出るのでタイプアサーションの後、intにキャスト
 	// panic: interface conversion: interface {} is float64, not int [recovered]
 	// goroutine 36 [running]: -> loop
 	if claims["user_id"] == nil {
-		statusCode = http.StatusInternalServerError
+		return 0, errors.New("JWT claims not included")
 	} else {
 		userID = int(claims["user_id"].(float64))
 	}
 
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
-	log.Println("user_id : " + string(userID))
+	log.Printf("user_id : %d\n", userID)
 
-	return userID, statusCode
+	return userID, nil
 }
 
 func jsonResponse(w http.ResponseWriter, response Response) {
@@ -133,6 +152,9 @@ func jsonResponse(w http.ResponseWriter, response Response) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
+	log.Printf("response : %s\n", string(res))
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(res)

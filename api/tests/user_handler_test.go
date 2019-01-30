@@ -3,13 +3,12 @@ package api
 import (
 	"bytes"
 	"encoding/json"
-	// "io/ioutil"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
-	"os"
+	"strings"
 	"testing"
 
-	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/go-chi/jwtauth"
 	
 	"github.com/motonary/Fortuna/api"
@@ -19,9 +18,15 @@ import (
 var tokenAuth *jwtauth.JWTAuth
 var tokenString string
 
+type Response struct {
+	Status int          `json:"status"`
+	User   *entity.User `json:"user,omitempty"`
+	Token  string       `json:"token,omitempty"`
+}
+
 func TestCreateUserHandler(t *testing.T) {
-	userParams := entity.NewUser(0, "ririco", "ririco@example.com", "test")
-	body, _ := json.Marshal(userParams)
+	user := entity.NewUser(1, "ririco", "ririco@example.com", "test")
+	body, _ := json.Marshal(user)
 	
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest("POST", "/users",  bytes.NewBuffer(body))
@@ -32,7 +37,12 @@ func TestCreateUserHandler(t *testing.T) {
 	defer rw.Body.Close()
 
 	if rw.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code : %d", rw.StatusCode)
+		t.Fatalf("unexpected status code : %d\n\n", rw.StatusCode)
+	}
+
+	bytes,_ := ioutil.ReadAll(rw.Body)
+	if strings.Contains(string(body), string(bytes)) {
+		t.Fatalf("response data is unexpected : %s\n\n", string(bytes))
 	}
 }
 
@@ -47,7 +57,7 @@ func TestGetUserHandlerResponse(t *testing.T) {
 	defer rw.Body.Close()
 
 	if rw.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code : %d", rw.StatusCode)
+		t.Fatalf("unexpected status code : %d\n\n", rw.StatusCode)
 	}
 }
 
@@ -62,7 +72,7 @@ func TestUpdatetUserHandlerResponse(t *testing.T) {
 	defer rw.Body.Close()
 
 	if rw.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code : %d", rw.StatusCode)
+		t.Fatalf("unexpected status code : %d\n\n", rw.StatusCode)
 	}
 }
 
@@ -77,25 +87,6 @@ func TestDeleteUserHandlerResponse(t *testing.T) {
 	defer rw.Body.Close()
 
 	if rw.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code : %d", rw.StatusCode)
+		t.Fatalf("unexpected status code : %d\n\n", rw.StatusCode)
 	}
-}
-
-func setup() {
-	println("setup")
-	tokenAuth = jwtauth.New("HS256", []byte("secret"), nil)
-	_, tokenString, _ = tokenAuth.Encode(jwt.MapClaims{"user_id": 1})
-}
-
-func teardown() {
-	println("teardown")
-}
-
-func TestMain(m *testing.M) {
-	setup()
-	ret := m.Run()
-	if ret == 0 {
-		teardown()
-	}
-	os.Exit(ret)
 }
