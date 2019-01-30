@@ -26,6 +26,13 @@ interface UserApiFailure extends BaseAction {
 
 export type CurrentUserAction = UserApiRequest | UserApiSuccess | UserApiFailure | SessionAction
 
+export type CurrentUserActionType = ThunkAction<
+  Promise<CurrentUserAction | void>,
+  {},
+  {},
+  AnyAction
+>
+
 const userApiRequest = () => {
   return {
     type: actionTypes.USER_API_REQUEST,
@@ -51,7 +58,7 @@ export const createUser = (
   email: string,
   password: string,
   password_confirmation: string
-): ThunkAction<Promise<CurrentUserAction | void>, {}, {}, AnyAction> => {
+): CurrentUserActionType => {
   return (dispatch: ThunkDispatch<{}, {}, CurrentUserAction>) => {
     dispatch(userApiRequest())
     return axios
@@ -68,7 +75,7 @@ export const updateUser = (
   email: string,
   password: string,
   password_confirmation: string
-): ThunkAction<Promise<CurrentUserAction | void>, {}, {}, AnyAction> => {
+): CurrentUserActionType => {
   return (dispatch: ThunkDispatch<{}, {}, CurrentUserAction>) => {
     dispatch(userApiRequest())
     return axios({
@@ -112,6 +119,9 @@ export type SessionAction =
   | SessionApiFailure
   | SessionDeleteSuccess
 
+// rename
+export type SessionActionType = ThunkAction<Promise<SessionAction | void>, {}, {}, AnyAction>
+
 const sessionApiRequest = () => {
   return {
     type: actionTypes.SESSION_API_REQUEST,
@@ -137,10 +147,7 @@ const sessionApiFailure = (error: any) => {
     payload: { error },
   }
 }
-export const createSession = (
-  email: string,
-  password: string
-): ThunkAction<Promise<SessionAction | void>, {}, {}, AnyAction> => {
+export const createSession = (email: string, password: string): SessionActionType => {
   return (dispatch: ThunkDispatch<{}, {}, SessionAction>) => {
     dispatch(sessionApiRequest())
     return axios
@@ -156,7 +163,7 @@ export const createSession = (
   }
 }
 
-export const deleteSession = (): ThunkAction<Promise<SessionAction | void>, {}, {}, AnyAction> => {
+export const deleteSession = (): SessionActionType => {
   return (dispatch: ThunkDispatch<{}, {}, SessionAction>) => {
     dispatch(sessionApiRequest())
     return axios

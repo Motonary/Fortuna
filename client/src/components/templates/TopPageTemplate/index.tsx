@@ -3,7 +3,13 @@ import { connect } from 'react-redux'
 
 import { SignInForm, SignUpForm } from '../../organisms/Form'
 
-import { createUser, createSession } from '../../../actions/users'
+import {
+  createUser,
+  createSession,
+  // TODO: Functionに型付け
+  // CurrentUserActionType,
+  // SessionActionType,
+} from '../../../actions/users'
 
 interface TopPageTemplateProps {
   createUser: Function
