@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 	
-	"github.com/motonary/Fortuna/api"
+	api "github.com/motonary/Fortuna/api/v1"
 	"github.com/motonary/Fortuna/entity"
 )
 

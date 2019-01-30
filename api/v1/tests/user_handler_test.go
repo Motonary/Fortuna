@@ -11,7 +11,7 @@ import (
 
 	"github.com/go-chi/jwtauth"
 	
-	"github.com/motonary/Fortuna/api"
+	api "github.com/motonary/Fortuna/api/v1"
 	"github.com/motonary/Fortuna/entity"
 )
 

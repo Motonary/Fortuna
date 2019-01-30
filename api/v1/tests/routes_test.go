@@ -1,7 +1,6 @@
 package api
 
 import (
-	"github.com/motonary/Fortuna/api"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -10,6 +9,8 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/jwtauth"
+
+	api "github.com/motonary/Fortuna/api/v1"
 )
 
 var router *chi.Mux
