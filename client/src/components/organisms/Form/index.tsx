@@ -39,9 +39,10 @@ const validate = (values: FormValues): FormErrorMsgs => {
   return errors
 }
 
+// TODO: Functionをもっと厳格な型に
 const submitHof = (actionFunc: Function): SubmitHofType => {
   return function submit(values: FormValues, actions: FormikActions<FormValues>) {
-    actionFunc({ ...values })
+    actionFunc(values)
       .then(() => actions.setSubmitting(false))
       .catch(() => actions.setSubmitting(false))
   }

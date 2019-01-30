@@ -1,7 +1,8 @@
 import { actionTypes } from '../constants/action-types'
 import { SwitchIsLoadingAction, CurrentUserAction } from '../actions/users'
 
-export function currentUser(state: any = null, action: CurrentUserAction) {
+// TODO: stateの型付け厳格に
+export function currentUser(state: Object = {}, action: CurrentUserAction) {
   switch (action.type) {
     case actionTypes.SET_CURRENT_USER:
       if ('currentUser' in action.payload) {
