@@ -10,13 +10,13 @@ import { ROOT_URL } from '../constants/url'
 // Loading
 // -------------------------------------------------------------------------------------
 export type SwitchIsLoadingAction = {
-  type: 'CURRENT_USER_SET_IS_LOADING'
+  type: 'SET_IS_LOADING__CURRENT_USER'
   payload: { isLoading: boolean }
 }
 
 const switchIsLoading = (isLoading: boolean) => {
   return {
-    type: actionTypes.CURRENT_USER_SET_IS_LOADING,
+    type: actionTypes.SET_IS_LOADING__CURRENT_USER,
     payload: { isLoading },
   }
 }

@@ -5,5 +5,7 @@ export const actionTypes = keyMirror({
   SET_CURRENT_USER: null,
   UPDATE_CURRENT_USER: null,
   DELETE_SESSION: null,
-  CURRENT_USER_SET_IS_LOADING: null,
+
+  // Loading
+  SET_IS_LOADING__CURRENT_USER: null,
 })

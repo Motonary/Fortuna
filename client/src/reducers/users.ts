@@ -29,7 +29,7 @@ export function currentUser(state: any = {}, action: CurrentUserAction) {
 
 export function isLoadingCurrentUser(state: boolean = false, action: SwitchIsLoadingAction) {
   switch (action.type) {
-    case actionTypes.CURRENT_USER_SET_IS_LOADING:
+    case actionTypes.SET_IS_LOADING__CURRENT_USER:
       return action.payload.isLoading
 
     default:
