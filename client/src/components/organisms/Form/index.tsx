@@ -68,7 +68,6 @@ const formGenerator = (type: string): FormGeneratorType => {
             <Button type="submit" style="form" disabled={isSubmitting}>
               Submit
             </Button>
-            <div />
           </form>
         )}
       />
