@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { Field, Formik, ErrorMessage, FormikActions } from 'formik'
-import _ from 'lodash'
 
 import Button from '../../atoms/Button'
 
@@ -59,7 +58,7 @@ const formGenerator = (type: string): FormGeneratorType => {
         onSubmit={submitHof(actionFunc)}
         render={({ handleSubmit, isSubmitting }) => (
           <form className={styles.signForm} onSubmit={handleSubmit}>
-            {_.map(Object.keys(rest), key => (
+            {Object.keys(rest).map(key => (
               <div className={styles.formFields} key={key}>
                 <Field type={key} name={key} placeholder={key} className={styles.formField} />
                 <ErrorMessage component="div" name={key} />
