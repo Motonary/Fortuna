@@ -42,7 +42,6 @@ interface CreateSessionAction extends BaseAction {
 
 interface DeleteSessionAction extends BaseAction {
   type: string
-  payload: { currentUser: null }
 }
 
 // interface RemoveFirstVisitFlagAction extends BaseAction {
@@ -146,9 +145,6 @@ export const deleteSession = (): ThunkAction<void, {}, {}, AnyAction> => {
   return (dispatch: ThunkDispatch<{}, {}, DeleteSessionAction>) => {
     sessionStorage.removeItem('jwt')
     // TODO: Redirectなどのcallbackを走らせる
-    dispatch({
-      type: actionTypes.DELETE_SESSION,
-      payload: { currentUser: null },
-    })
+    dispatch({ type: actionTypes.DELETE_SESSION })
   }
 }

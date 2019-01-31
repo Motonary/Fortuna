@@ -2,7 +2,7 @@ import { actionTypes } from '../constants/action-types'
 import { SwitchIsLoadingAction, CurrentUserAction } from '../actions/users'
 
 // TODO: stateの型付け厳格に
-export function currentUser(state: any = {}, action: CurrentUserAction) {
+export function currentUser(state: any = null, action: CurrentUserAction) {
   switch (action.type) {
     case actionTypes.SET_CURRENT_USER:
       if ('currentUser' in action.payload) {
@@ -17,10 +17,7 @@ export function currentUser(state: any = {}, action: CurrentUserAction) {
       break
 
     case actionTypes.DELETE_SESSION:
-      if ('currentUser' in action.payload) {
-        return null
-      }
-      break
+      return null
 
     default:
       return state
