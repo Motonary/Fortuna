@@ -1,12 +1,12 @@
 development:
   dialect: mysql
   dir: database/migrations
-  datasource: Motonary:ririco722@/fortuna?parseTime=true
+  datasource: Motonary:ririco722@/fortuna?charset=utf8&parseTime=True&loc=Local
 
 test:
   dialect: mysql
   dir: database/migrations
-  datasource: Motonary:ririco722@/fortuna_test?parseTime=true
+  datasource: Motonary:ririco722@/fortuna_test?charset=utf8&parseTime=True&loc=Local
 
 # production:
 #   dialect: mysql
