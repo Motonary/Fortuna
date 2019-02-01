@@ -9,7 +9,7 @@ import { FormValues, FormErrorMsgs, SubmitHofType, FormGeneratorType, FormType }
 
 // TODO: バリデーション整備
 const validate = (values: FormValues): FormErrorMsgs => {
-  let errors: any = {}
+  let errors: FormErrorMsgs = {}
 
   if (!values.email) {
     errors.email = 'Required'
