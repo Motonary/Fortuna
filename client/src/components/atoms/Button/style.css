@@ -37,4 +37,5 @@
   height: 40px;
   margin: 10px auto;
   cursor: pointer;
+  border: 1px solid gray;
 }
