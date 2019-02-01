@@ -11,5 +11,5 @@ test:
 # production:
 #   dialect: mysql
 #   dir: database/migrations
-#   datasource: dbname=myapp sslmode=disable
+#   datasource: dbname=myapp sslmode=disable s
 #   table: migrations

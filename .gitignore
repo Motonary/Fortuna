@@ -12,6 +12,6 @@
 # Env variables
 .envrc
 
-# database config (tempolary)
+# database config (temporary)
 /config/database.yml
 /config/migration_config.yml
