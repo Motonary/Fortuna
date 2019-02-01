@@ -1,0 +1,19 @@
+driver: mysql
+development:
+  user: Motonary
+  pass: ririco722
+  db: fortuna_dev
+  protocol: ""
+  option: charset=utf8&parseTime=True&loc=Local # enable time.Time
+production:
+  user: Motonary
+  pass: ririco722
+  db: fortuna_production
+  protocol: ""
+  option: charset=utf8&parseTime=True&loc=Local
+test:
+  user: Motonary
+  pass: ririco722
+  db: fortuna_test
+  protocol: ""
+  option: charset=utf8&parseTime=True&loc=Local

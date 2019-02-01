@@ -9,14 +9,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/go-chi/jwtauth"
-	
 	api "github.com/motonary/Fortuna/api/v1"
 	"github.com/motonary/Fortuna/entity"
 )
-
-var tokenAuth *jwtauth.JWTAuth
-var tokenString string
 
 type Response struct {
 	Status int          `json:"status"`
@@ -27,9 +22,9 @@ type Response struct {
 func TestCreateUserHandler(t *testing.T) {
 	user := entity.NewUser(1, "ririco", "ririco@example.com", "test")
 	body, _ := json.Marshal(user)
-	
+
 	w := httptest.NewRecorder()
-	r := httptest.NewRequest("POST", "/users",  bytes.NewBuffer(body))
+	r := httptest.NewRequest("POST", "/users", bytes.NewBuffer(body))
 
 	api.Router().ServeHTTP(w, r)
 
@@ -40,7 +35,7 @@ func TestCreateUserHandler(t *testing.T) {
 		t.Fatalf("unexpected status code : %d\n\n", rw.StatusCode)
 	}
 
-	bytes,_ := ioutil.ReadAll(rw.Body)
+	bytes, _ := ioutil.ReadAll(rw.Body)
 	if strings.Contains(string(body), string(bytes)) {
 		t.Fatalf("response data is unexpected : %s\n\n", string(bytes))
 	}

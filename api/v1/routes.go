@@ -9,15 +9,12 @@ import (
 )
 
 var (
-	tokenAuth *jwtauth.JWTAuth
+	tokenAuth   *jwtauth.JWTAuth
 	tokenString string
 )
 
-func init() {
+func Main() {
 	tokenAuth = jwtauth.New("HS256", []byte("secret"), nil)
-}
-
-func main() {
 	addr := ":3000/api/v1"
 	log.Printf("Starting server on %v\n", addr)
 	http.ListenAndServe(addr, Router())

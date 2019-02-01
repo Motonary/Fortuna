@@ -10,6 +10,7 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/go-chi/jwtauth"
 
+	db "github.com/motonary/Fortuna/database"
 	"github.com/motonary/Fortuna/entity"
 )
 
@@ -21,7 +22,7 @@ type Response struct {
 
 // POST /users
 func CreateUser(w http.ResponseWriter, r *http.Request) {
-	user, err := getCreateUserParams(r)
+	user, err := getUserParams(r)
 	if err != nil {
 		httpErrCheck(w, err, http.StatusInternalServerError)
 	}
@@ -38,28 +39,28 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 // GET /users/:id
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	userID, err := getAuthorizedUserParams(r)
+	userID, _, err := getAuthorizedUserParams(r)
 	if err != nil {
 		httpErrCheck(w, err, http.StatusUnauthorized)
 	}
 
-	user, err := dbGetUser(userID)
+	user, err := db.GetUserBy("id", userID)
 	if err != nil {
 		httpErrCheck(w, err, http.StatusBadRequest)
 	}
-	
+
 	response := Response{http.StatusOK, user, ""}
 	jsonResponse(w, response)
 }
 
 // PUT /users/:id
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
-	userID, err := getAuthorizedUserParams(r)
+	_, userParams, err := getAuthorizedUserParams(r)
 	if err != nil {
 		httpErrCheck(w, err, http.StatusUnauthorized)
 	}
 
-	user, err := dbUpdateUser(userID)
+	user, err := db.UpdateUser(userParams)
 	if err != nil {
 		httpErrCheck(w, err, http.StatusInternalServerError)
 	}
@@ -70,12 +71,12 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 // DELETE /users/:id
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
-	userID, err := getAuthorizedUserParams(r)
+	userID, _, err := getAuthorizedUserParams(r)
 	if err != nil {
 		httpErrCheck(w, err, http.StatusUnauthorized)
 	}
 
-	err = dbDeleteUser(userID)
+	err = db.DeleteUser(userID)
 	if err != nil {
 		httpErrCheck(w, err, http.StatusInternalServerError)
 	}
@@ -89,30 +90,10 @@ func dbCreateUser(user *entity.User) error {
 	return nil
 }
 
-func dbGetUser(userID int) (*entity.User, error) {
-	return entity.NewUser(userID, "ririco", "ririco@example.com", "test"), nil
-}
-
-func dbUpdateUser(userID int) (*entity.User, error) {
-	user, err := entity.UpdateUser(userID)
-	if err != nil {
-		return nil, err
-	}
-	return user, nil
-}
-
-func dbDeleteUser(userID int) error {
-	_, err := entity.DeleteUser(userID)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func getCreateUserParams(r *http.Request) (*entity.User, error) {
+func getUserParams(r *http.Request) (*entity.User, error) {
 	var user *entity.User
 	body, _ := ioutil.ReadAll(r.Body)
-	
+
 	err := json.Unmarshal(body, &user)
 	if err != nil {
 		return nil, err
@@ -124,18 +105,20 @@ func getCreateUserParams(r *http.Request) (*entity.User, error) {
 	return user, nil
 }
 
-func getAuthorizedUserParams(r *http.Request) (int, error) {
+func getAuthorizedUserParams(r *http.Request) (int, *entity.User, error) {
 	var userID int
+	log.Printf("%v", r.Body)
 
 	_, claims, err := jwtauth.FromContext(r.Context())
 	if err != nil {
-		return 0, err
+		return 0, nil, err
 	}
+	log.Printf("%v\n", claims)
 	// 以下のエラーが出るのでタイプアサーションの後、intにキャスト
 	// panic: interface conversion: interface {} is float64, not int [recovered]
 	// goroutine 36 [running]: -> loop
 	if claims["user_id"] == nil {
-		return 0, errors.New("JWT claims not included")
+		return 0, nil, errors.New("JWT claims not included")
 	} else {
 		userID = int(claims["user_id"].(float64))
 	}
@@ -143,7 +126,9 @@ func getAuthorizedUserParams(r *http.Request) (int, error) {
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 	log.Printf("user_id : %d\n", userID)
 
-	return userID, nil
+	user, _ := getUserParams(r)
+
+	return userID, user, nil
 }
 
 func jsonResponse(w http.ResponseWriter, response Response) {
