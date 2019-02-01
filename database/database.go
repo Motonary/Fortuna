@@ -39,9 +39,9 @@ func Connect() {
 	}
 
 	t := make(map[interface{}]interface{})
-  _ = yaml.Unmarshal([]byte(yml), &t)
+	_ = yaml.Unmarshal([]byte(yml), &t)
 
-	cnf := t[os.Getenv("FORTUNAENV")].(map[interface {}]string)
+	cnf := t[os.Getenv("FORTUNAENV")].(map[interface{}]string)
 
 	CONNECT := cnf["user"] + ":" + cnf["pass"] + "@" + cnf["protocol"] + "/" + cnf["db"] + "?" + cnf["option"]
 	db, err = gorm.Open(t["driver"].(string), CONNECT)

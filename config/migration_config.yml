@@ -10,6 +10,6 @@ test:
 
 # production:
 #   dialect: mysql
-#   dir: migrations/postgres
+#   dir: database/migrations
 #   datasource: dbname=myapp sslmode=disable
 #   table: migrations

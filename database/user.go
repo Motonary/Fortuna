@@ -53,7 +53,7 @@ func DeleteUser(userID int) error {
 }
 
 func dbUserLogger(user interface{}) {
-	data,_ := json.Marshal(user)
+	data, _ := json.Marshal(user)
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 	log.Println(string(data))
 }

@@ -14,8 +14,8 @@ import (
 )
 
 var (
-	router *chi.Mux
-	tokenAuth *jwtauth.JWTAuth
+	router      *chi.Mux
+	tokenAuth   *jwtauth.JWTAuth
 	tokenString string
 )
 
@@ -34,28 +34,25 @@ func TestUnauthorizedRequestHandle(t *testing.T) {
 	}
 }
 
-// func TestAuthorizedRequestHandle(t *testing.T) {
-// 	// tokenAuth := jwtauth.New("HS256", []byte("secret"), nil)
-// 	// _, tokenString, _ := tokenAuth.Encode(jwt.MapClaims{"user_id": 2})
+func TestAuthorizedRequestHandle(t *testing.T) {
+	w := httptest.NewRecorder()
+	r := httptest.NewRequest("GET", "/users/2", nil)
+	r.Header.Set("Authorization", "Bearer "+tokenString)
 
-// 	w := httptest.NewRecorder()
-// 	r := httptest.NewRequest("GET", "/users/2", nil)
-// 	r.Header.Set("Authorization", "Bearer "+tokenString)
+	api.Router().ServeHTTP(w, r)
+	rw := w.Result()
+	defer rw.Body.Close()
 
-// 	api.Router().ServeHTTP(w, r)
-// 	rw := w.Result()
-// 	defer rw.Body.Close()
+	t.Logf("responsed status code : %d\n\n", rw.StatusCode)
 
-// 	t.Logf("responsed status code : %d\n\n", rw.StatusCode)
-
-// 	if rw.StatusCode != http.StatusOK {
-// 		t.Fatalf("unexpected status code : %d\n\n", rw.StatusCode)
-// 	}
-// }
+	if rw.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code : %d\n\n", rw.StatusCode)
+	}
+}
 
 func setup() {
-	
 	println("setup")
+
 	tokenAuth = jwtauth.New("HS256", []byte("secret"), nil)
 	_, tokenString, _ = tokenAuth.Encode(jwt.MapClaims{"user_id": 1})
 	println(tokenString)
