@@ -44,12 +44,20 @@ func connect() *gorm.DB {
 	return db
 }
 
-func ResetDB() *gorm.DB {
+func BuildDB() *gorm.DB {
 	err := runMakeSeeds(DB, seed)
 	if err != nil {
 		panic("making seeds couldn't run through\n")
 	}
+	
 	return DB
+}
+
+func CleanDB(db *gorm.DB) {
+	err := runDestroySeeds(db, seed)
+	if err != nil {
+		panic("destorying seeds couldn't run through\n")
+	}
 }
 
 func getConfigFile() string {
@@ -67,9 +75,17 @@ func loadConfig(file_path string) []byte {
 	return yml
 }
 
-func runMakeSeeds(DB *gorm.DB, seed Data) error {
+func runMakeSeeds(db *gorm.DB, seed Data) error {
 	for _, user := range seed.Users {
-		DB.Create(user)
+		db.Create(&user)
+	}
+
+	return nil
+}
+
+func runDestroySeeds(db *gorm.DB, seed Data) error {
+	for _, user := range seed.Users {
+		db.Delete(&user)
 	}
 
 	return nil
