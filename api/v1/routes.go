@@ -15,6 +15,7 @@ var (
 
 func Main() {
 	tokenAuth = jwtauth.New("HS256", []byte("secret"), nil)
+	// TODO: productionとdevで区別
 	addr := ":3000/api/v1"
 	log.Printf("Starting server on %v\n", addr)
 	http.ListenAndServe(addr, Router())

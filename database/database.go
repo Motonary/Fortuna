@@ -4,32 +4,17 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"reflect"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/inflection"
 	yaml "gopkg.in/yaml.v2"
-
-	"github.com/motonary/Fortuna/entity"
 )
 
 var (
 	db *gorm.DB
 )
-
-func Migrate() {
-	for _, model := range []interface{}{
-		&entity.User{},
-	} {
-		if err := db.AutoMigrate(model).Error; err != nil {
-			log.Println(err)
-		} else {
-			log.Println("Auto migrating", reflect.TypeOf(model).Name(), "...")
-		}
-	}
-}
 
 func Connect() {
 	yml, err := ioutil.ReadFile("config/database.yml")
