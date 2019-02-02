@@ -61,7 +61,7 @@ jobs:
     docker:
       - image: circleci/golang:1.11
       - image: circleci/mysql:5.7.24
-        command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
+        command: mysqld --character-set-server=utf8 --collation-server=utf8
         environment:
           MYSQL_USER: root
           MYSQL_ALLOW_EMPTY_PASSWORD: true
@@ -77,9 +77,6 @@ jobs:
       - run:
           name: Mysql database
           command: mysql -u root -e "create database fortuna_test;" 
-      - run:
-          name: run all sql script
-          command: for f in /database/migration/*;do mysql -u root -e "source $f;" done 
       - run:
           name: test
           command: GO_ENV=test go test ./...
