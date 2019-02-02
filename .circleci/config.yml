@@ -98,6 +98,6 @@ workflows:
     jobs:
       - build
       - test:
-          context: test # if needed
+          # context: test # if needed
           requires:
           - build
