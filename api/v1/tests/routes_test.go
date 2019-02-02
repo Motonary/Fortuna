@@ -12,14 +12,14 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/jwtauth"
 
-	"github.com/motonary/Fortuna/entity"
 	api "github.com/motonary/Fortuna/api/v1"
+	"github.com/motonary/Fortuna/entity"
 )
 
 var (
 	router      *chi.Mux
-	testUser		*entity.User
-	testBody		[]byte
+	testUser    *entity.User
+	testBody    []byte
 	tokenAuth   *jwtauth.JWTAuth
 	tokenString string
 )

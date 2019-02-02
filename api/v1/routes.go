@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"time"
 
+	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/jwtauth"
-	jwt "github.com/dgrijalva/jwt-go"
 )
 
 var (
@@ -54,9 +54,9 @@ func Router() http.Handler {
 
 func issueTokenString(token *jwtauth.JWTAuth, user *entity.User) string {
 	claims := jwt.MapClaims{
-		"admin": false,
-		"iat": time.Now(),
-    "exp": time.Now().Add(time.Hour * 24).Unix(),
+		"admin":   false,
+		"iat":     time.Now(),
+		"exp":     time.Now().Add(time.Hour * 24).Unix(),
 		"user_id": user.ID}
 	_, tokenString, _ := tokenAuth.Encode(claims)
 
