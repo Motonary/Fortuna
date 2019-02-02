@@ -61,7 +61,7 @@ jobs:
     docker:
       - image: circleci/golang:1.11
       - image: circleci/mysql:5.7.24
-        command: mysqld --character-set-server=utf8 --collation-server=utf8
+        command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
         environment:
           MYSQL_USER: root
           MYSQL_ALLOW_EMPTY_PASSWORD: true
