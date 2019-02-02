@@ -90,7 +90,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - build
+            - /go/src/gihub.com/motonary/Fortuna/build
 
 workflows:
   version: 2
