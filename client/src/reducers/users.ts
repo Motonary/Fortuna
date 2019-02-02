@@ -1,5 +1,6 @@
 import { actionTypes } from '../constants/action-types'
 import { SwitchIsLoadingAction, CurrentUserAction } from '../actions/users'
+import ReduxAPIStruct from './reducer-type'
 
 // TODO: stateの型付け厳格に
 export function currentUser(state: any = null, action: CurrentUserAction) {
