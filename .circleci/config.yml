@@ -54,7 +54,7 @@ jobs:
           root: /
           paths:
             - tmp/go/cache
-            - go/src/github.com/motonary/Fortuna/build
+            - go/src/github.com/motonary/Fortuna/builds
 
   test:
     working_directory: /go/src/github.com/motonary/Fortuna
