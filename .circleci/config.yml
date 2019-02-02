@@ -13,8 +13,6 @@ jobs:
     steps:
       - run: echo 'export PATH=${GOPATH}/bin/:${PATH}' >> $BASH_ENV
       - checkout
-      - run: mkdir -p $TEST_RESULTS
-
       - restore_cache:
           keys:
             - vendor-{{ checksum "Gopkg.lock" }}
@@ -79,8 +77,11 @@ jobs:
       - attach_workspace:
           at: /
       - run:
+          name: Mysql database
+          command: mysql  -h 127.0.0.1 -u root -e "create database fortuna_test;"
+      - run:
           name: test
-          command: make test
+          command: GO_ENV=test go test ./...
       - save_cache:
           key: build-cache-{{ .Branch }}--{{ .Revision }}
           paths:
