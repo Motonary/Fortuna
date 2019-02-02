@@ -76,7 +76,7 @@ jobs:
       - run: sudo apt-get install mysql-client --allow-unauthenticated
       - run:
           name: Mysql database
-          command: mysql -u root -e "create database fortuna_test;" 
+          command: mysql -h 127.0.0.1 -u root circle_test -e "create database fortuna_test;" 
       - run:
           name: test
           command: GO_ENV=test go test ./...
