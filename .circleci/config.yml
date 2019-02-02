@@ -73,9 +73,13 @@ jobs:
             - vendor-{{ checksum "Gopkg.lock" }}
       - attach_workspace:
           at: /
+      - run: sudo apt-get install mysql-client mssql-tools --allow-unauthenticated
       - run:
           name: Mysql database
-          command: pwd; mysql --version; go version;
+          command: mysql -u root -e "create database fortuna_test;" 
+      - run:
+          name: run all sql script
+          command: for %f in (*.sql) do /opt/mssql-tools/bin/sqlcmd /S circleci_test /d fortuna_test -U root -i"%%f"
       - run:
           name: test
           command: GO_ENV=test go test ./...
