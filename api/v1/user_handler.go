@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 
-	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/go-chi/jwtauth"
 
 	db "github.com/motonary/Fortuna/database"
@@ -27,13 +26,13 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		httpErrCheck(w, err, http.StatusInternalServerError)
 	}
 
-	err = dbCreateUser(user)
-	if err != nil {
-		httpErrCheck(w, err, http.StatusInternalServerError)
+	createdUser, dbErr := db.CreateUser(user)
+	if dbErr != nil {
+		httpErrCheck(w, dbErr, http.StatusInternalServerError)
 	}
-	_, tokenString, _ = tokenAuth.Encode(jwt.MapClaims{"user_id": user.ID})
+	tokenString = issueTokenString(tokenAuth, createdUser)
 
-	response := Response{http.StatusOK, user, tokenString}
+	response := Response{http.StatusOK, createdUser, tokenString}
 	jsonResponse(w, response)
 }
 
@@ -85,11 +84,6 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	jsonResponse(w, response)
 }
 
-func dbCreateUser(user *entity.User) error {
-	entity.NewUser(user.ID, user.Name, user.Email, user.Password)
-	return nil
-}
-
 func getUserParams(r *http.Request) (*entity.User, error) {
 	var user *entity.User
 	body, _ := ioutil.ReadAll(r.Body)
@@ -107,13 +101,11 @@ func getUserParams(r *http.Request) (*entity.User, error) {
 
 func getAuthorizedUserParams(r *http.Request) (int, *entity.User, error) {
 	var userID int
-	log.Printf("%v", r.Body)
 
 	_, claims, err := jwtauth.FromContext(r.Context())
 	if err != nil {
 		return 0, nil, err
 	}
-	log.Printf("%v\n", claims)
 	// 以下のエラーが出るのでタイプアサーションの後、intにキャスト
 	// panic: interface conversion: interface {} is float64, not int [recovered]
 	// goroutine 36 [running]: -> loop

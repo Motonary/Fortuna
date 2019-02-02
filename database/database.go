@@ -13,28 +13,49 @@ import (
 )
 
 var (
-	db *gorm.DB
+	DB   *gorm.DB
+	seed map[string]map[string]string
 )
 
-func Connect() {
-	yml, err := ioutil.ReadFile("config/database.yml")
-	if err != nil {
-		log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
-		log.Println(err)
-	}
+func init() {
+	yml := loadConfig(getConfigFile())
+	_ = yaml.Unmarshal(yml, &seed)
 
-	t := make(map[interface{}]interface{})
-	_ = yaml.Unmarshal([]byte(yml), &t)
+	DB = Connect()
+	log.Printf("database connected\n")
+}
 
-	cnf := t[os.Getenv("FORTUNAENV")].(map[interface{}]string)
+func Connect() *gorm.DB {
+	conf := seed[os.Getenv("GO_ENV")]
 
-	CONNECT := cnf["user"] + ":" + cnf["pass"] + "@" + cnf["protocol"] + "/" + cnf["db"] + "?" + cnf["option"]
-	db, err = gorm.Open(t["driver"].(string), CONNECT)
+	CONNECT := conf["user"] + ":" + conf["pass"] + "@" + conf["protocool"] + "/" + conf["db"] + "?" + conf["option"]
+	DB, err := gorm.Open(conf["driver"], CONNECT)
 
 	if err != nil {
 		log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 		log.Print(err)
 	}
+
+	return DB
+}
+
+func getConfigFile() string {
+	if _, err := os.Stat("config/database.yml"); err == nil {
+		return "config/database.yml"
+	}
+	if _, err := os.Stat("../config/database.yml"); err == nil {
+		return "../config/database.yml"
+	}
+	return "../../../config/database.yml"
+}
+
+func loadConfig(file_path string) []byte {
+	yml, err := ioutil.ReadFile(file_path)
+	if err != nil {
+		log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
+		log.Println(err)
+	}
+	return yml
 }
 
 func dbLogger() {

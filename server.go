@@ -6,6 +6,7 @@ import (
 )
 
 func main() {
-	database.Connect()
+	db := database.Connect()
 	server.Main()
+	defer db.Close()
 }

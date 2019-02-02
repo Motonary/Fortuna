@@ -13,47 +13,56 @@ import (
 	"github.com/motonary/Fortuna/entity"
 )
 
+func CreateUser(user *entity.User) (*entity.User, error) {
+	DB.Create(&user)
+	if !DB.NewRecord(user) {
+		return user, nil
+	}
+	return nil, errors.New("User not created")
+}
+
 func GetUserBy(name string, data interface{}) (*entity.User, error) {
-	var user *entity.User
+	user := entity.User{}
 
 	switch v := data.(type) {
 	case int:
-		db.First(&user, name+"=?", v)
+		DB.First(&user, name+"=?", v)
 	case string:
-		db.First(&user, name+"=?", v)
+		DB.First(&user, name+"=?", v)
+		log.Printf("%v!\n", v)
 	default:
 		log.Printf("undefined type %T!\n", v)
 		return nil, errors.New("undefined type of argument")
 	}
-	dbUserLogger(user)
+	dbUserLogger(&user)
 
-	return user, nil
+	return &user, nil
 }
 
 func UpdateUser(user *entity.User) (*entity.User, error) {
-	var userUpdated *entity.User
+	userUpdated := entity.User{}
 
 	userUpdated.Email = user.Email
-	db.First(&userUpdated)
-	db.Model(&userUpdated).Update(user)
-	dbUserLogger(userUpdated)
+	DB.First(&userUpdated)
+	DB.Model(&userUpdated).Update(user)
+	dbUserLogger(&userUpdated)
 
-	return userUpdated, nil
+	return &userUpdated, nil
 }
 
 func DeleteUser(userID int) error {
-	var user *entity.User
+	user := entity.User{}
 
 	user.ID = userID
-	db.First(&user)
-	db.Delete(&user)
-	dbUserLogger(user)
+	DB.First(&user)
+	DB.Delete(&user)
+	dbUserLogger(&user)
 
 	return nil
 }
 
-func dbUserLogger(user interface{}) {
-	data, _ := json.Marshal(user)
+func dbUserLogger(user *entity.User) {
+	data, _ := json.Marshal(&user)
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 	log.Println(string(data))
 }

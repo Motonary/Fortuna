@@ -7,6 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 	yaml "gopkg.in/yaml.v2"
 
+	"github.com/motonary/Fortuna/database"
 	"github.com/motonary/Fortuna/entity"
 )
 
@@ -23,25 +24,7 @@ func init() {
 	yml := loadConfig(getConfigFile())
 	_ = yaml.Unmarshal(yml, &seed)
 
-	DB = connect()
-}
-
-func connect() *gorm.DB {
-	DBMS := "mysql"
-	USER := "Motonary"
-	PASS := "ririco722"
-	PROTOCOL := ""
-	DBNAME := "fortuna_test"
-	OPTION := "charset=utf8&parseTime=True&loc=Local" // enable time.Time
-
-	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + "?" + OPTION
-	db, err := gorm.Open(DBMS, CONNECT)
-
-	if err != nil {
-		panic("database couldn't be opend\n")
-	}
-
-	return db
+	DB = database.Connect()
 }
 
 func BuildDB() *gorm.DB {
