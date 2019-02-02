@@ -79,7 +79,7 @@ jobs:
           command: mysql -u root -e "create database fortuna_test;" 
       - run:
           name: run all sql script
-          command: for %f in (*.sql) do /opt/mssql-tools/bin/sqlcmd /S circleci_test /d fortuna_test -U root -i"%%f"
+          command: for f in /database/migration/*;do mysql -u root -e "source $f;" done 
       - run:
           name: test
           command: GO_ENV=test go test ./...
