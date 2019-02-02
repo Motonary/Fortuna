@@ -73,7 +73,7 @@ jobs:
             - vendor-{{ checksum "Gopkg.lock" }}
       - attach_workspace:
           at: /
-      - run: sudo apt-get install mysql-client mssql-tools --allow-unauthenticated
+      - run: sudo apt-get install mysql-client --allow-unauthenticated
       - run:
           name: Mysql database
           command: mysql -u root -e "create database fortuna_test;" 
