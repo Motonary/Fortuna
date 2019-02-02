@@ -41,7 +41,7 @@ jobs:
             - build-cache-
       - run:
           name: build
-          command: make build
+          command: go build -a -o ./builds/fortuna
       - save_cache:
           key: build-cache-{{ .Branch }}--{{ .Revision }}
           paths:
