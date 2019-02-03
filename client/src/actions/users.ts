@@ -3,7 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 import axios from 'axios'
 
 import { actionTypes } from '../constants/action-types'
-import { BaseAction } from '../constants/static-types'
+import { BaseAction, User } from '../constants/static-types'
 import { ROOT_URL } from '../constants/url'
 
 // -------------------------------------------------------------------------------------
@@ -27,12 +27,12 @@ export type CurrentUserThunkActionType = ThunkAction<Promise<void>, {}, {}, AnyA
 
 interface CreateUserAction extends BaseAction {
   type: string
-  payload: { currentUser: Object } // TODO: 厳格に
+  payload: { currentUser: User } // TODO: 厳格に
 }
 
 interface CreateSessionAction extends BaseAction {
   type: string
-  payload: { currentUser: Object } // TODO: 厳格に
+  payload: { currentUser: User } // TODO: 厳格に
 }
 
 // interface FetchCurrentUserAction extends BaseAction {
@@ -55,7 +55,7 @@ interface DeleteSessionAction extends BaseAction {
 
 interface UpdateProfileAction extends BaseAction {
   type: string
-  payload: { updatedUser: Object }
+  payload: { updatedUser: User }
 }
 
 export type CurrentUserAction =

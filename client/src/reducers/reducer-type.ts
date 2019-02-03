@@ -3,7 +3,7 @@ export interface ReduxAPIError {
   readonly message: string
 }
 
-interface ReduxAPIStruct<T> {
+export interface ReduxAPIStruct<T> {
   readonly status: 'default' | 'fetching' | 'success' | 'failure'
   readonly data: T | null
   readonly error: ReduxAPIError
@@ -19,5 +19,3 @@ export const errorDefault = (): ReduxAPIError => ({
   statusCode: 'default',
   message: '',
 })
-
-export default ReduxAPIStruct

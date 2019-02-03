@@ -1,9 +1,9 @@
 import { actionTypes } from '../constants/action-types'
+import { User } from '../constants/static-types'
 import { SwitchIsLoadingAction, CurrentUserAction } from '../actions/users'
-import ReduxAPIStruct from './reducer-type'
+import { ReduxAPIStruct, defaultSet } from './reducer-type'
 
-// TODO: stateの型付け厳格に
-export function currentUser(state: any = null, action: CurrentUserAction) {
+export function CurrentUser(state: ReduxAPIStruct<User> = defaultSet(), action: CurrentUserAction) {
   switch (action.type) {
     case actionTypes.SET_CURRENT_USER:
       if ('currentUser' in action.payload) {
@@ -19,16 +19,6 @@ export function currentUser(state: any = null, action: CurrentUserAction) {
 
     case actionTypes.DELETE_SESSION:
       return null
-
-    default:
-      return state
-  }
-}
-
-export function isLoadingCurrentUser(state: boolean = false, action: SwitchIsLoadingAction) {
-  switch (action.type) {
-    case actionTypes.SET_IS_LOADING__CURRENT_USER:
-      return action.payload.isLoading
 
     default:
       return state
