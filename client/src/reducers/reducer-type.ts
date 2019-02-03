@@ -1,17 +1,15 @@
 export interface ReduxAPIError {
   readonly statusCode: string
-  readonly message?: string
+  readonly message: string
 }
 
 interface ReduxAPIStruct<T> {
-  readonly isLoading: boolean
-  readonly status: 'success' | 'failure' | 'default'
+  readonly status: 'default' | 'fetching' | 'success' | 'failure'
   readonly data: T | null
   readonly error: ReduxAPIError
 }
 
-export const defaultSet = <T>(defaultValue: T): ReduxAPIStruct<T> => ({
-  isLoading: false,
+export const defaultSet = <T>(defaultValue?: T): ReduxAPIStruct<T> => ({
   status: 'default',
   data: defaultValue || null,
   error: errorDefault(),
