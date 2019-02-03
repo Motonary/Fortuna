@@ -8,8 +8,6 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/inflection"
-
-	"github.com/motonary/Fortuna/entity"
 )
 
 func main() {
@@ -19,8 +17,6 @@ func main() {
 	if err != nil {
 		return
 	}
-
-	db.AutoMigrate(&entity.User{})
 }
 
 func gormConnect() (*gorm.DB, error) {

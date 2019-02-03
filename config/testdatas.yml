@@ -1,0 +1,9 @@
+users:
+  -
+    name: "ririco"
+    email: "ririco@example.com"
+    password: "testtest"
+  -
+    name: "joker"
+    email: "joker@example.com"
+    password: "password"
