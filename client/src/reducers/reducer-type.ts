@@ -1,6 +1,8 @@
+import { StatusCode } from '../constants/static-types'
+
 export interface ReduxAPIError {
-  statusCode: string
-  message: string
+  statusCode: StatusCode | null
+  message?: string
 }
 
 export interface ReduxAPIStruct<T> {
@@ -16,6 +18,5 @@ export const defaultSet = <T>(defaultValue?: T): ReduxAPIStruct<T> => ({
 })
 
 export const errorDefault = (): ReduxAPIError => ({
-  statusCode: 'default',
-  message: '',
+  statusCode: null,
 })
