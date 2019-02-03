@@ -1,26 +1,27 @@
 import { actionTypes } from '../constants/action-types'
 import { User } from '../constants/static-types'
-import { SwitchIsLoadingAction, CurrentUserAction } from '../actions/users'
+import { CurrentUserAction } from '../actions/users'
 import { ReduxAPIStruct, defaultSet } from './reducer-type'
 
-export function currentUser(state: ReduxAPIStruct<User> = defaultSet(), action: CurrentUserAction) {
+export const currentUser = (
+  state: ReduxAPIStruct<User> = defaultSet(),
+  action: CurrentUserAction
+): ReduxAPIStruct<User> => {
   switch (action.type) {
+    case actionTypes.USER_API_REQUEST:
+      return { ...state, status: 'fetching' }
+
+    case actionTypes.USER_API_FAILURE:
+      return { ...state, status: 'failure', error: action.payload.error }
+
     case actionTypes.SET_CURRENT_USER:
-      if ('currentUser' in action.payload) {
-        return action.payload.currentUser
-      }
-      break
+      return { ...state, status: 'success', data: action.payload.currentUser }
 
     case actionTypes.UPDATE_CURRENT_USER:
-      if ('updatedUser' in action.payload) {
-        return action.payload.updatedUser
-      }
-      break
+      return { ...state, status: 'success', data: action.payload.updatedUser }
 
     case actionTypes.DELETE_SESSION:
-      return null
-
-    default:
-      return state
+      return { ...state, status: 'success', data: null }
   }
+  return state
 }

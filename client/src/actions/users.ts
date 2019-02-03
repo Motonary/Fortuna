@@ -6,33 +6,25 @@ import { actionTypes } from '../constants/action-types'
 import { BaseAction, User } from '../constants/static-types'
 import { ROOT_URL } from '../constants/url'
 
-// -------------------------------------------------------------------------------------
-// Loading
-// -------------------------------------------------------------------------------------
-export type SwitchIsLoadingAction = {
-  type: 'SET_IS_LOADING__CURRENT_USER'
-  payload: { isLoading: boolean }
+export type CurrentUserThunkActionType = ThunkAction<Promise<void>, {}, {}, AnyAction> // TODO: Rename
+
+interface UserAPIRequest extends BaseAction {
+  type: string
 }
 
-const switchIsLoading = (isLoading: boolean) => {
-  return {
-    type: actionTypes.SET_IS_LOADING__CURRENT_USER,
-    payload: { isLoading },
-  }
+interface UserAPIFailure extends BaseAction {
+  type: string
+  payload: { error: any } // TODO: 厳格に
 }
-// -------------------------------------------------------------------------------------
-// CurrentUser
-// -------------------------------------------------------------------------------------
-export type CurrentUserThunkActionType = ThunkAction<Promise<void>, {}, {}, AnyAction> // TODO: Rename
 
 interface CreateUserAction extends BaseAction {
   type: string
-  payload: { currentUser: User } // TODO: 厳格に
+  payload: { currentUser: User }
 }
 
 interface CreateSessionAction extends BaseAction {
   type: string
-  payload: { currentUser: User } // TODO: 厳格に
+  payload: { currentUser: User }
 }
 
 // interface FetchCurrentUserAction extends BaseAction {
@@ -59,6 +51,8 @@ interface UpdateProfileAction extends BaseAction {
 }
 
 export type CurrentUserAction =
+  | UserAPIRequest
+  | UserAPIFailure
   | CreateUserAction
   | CreateSessionAction
   // | FetchCurrentUserAction
@@ -67,13 +61,19 @@ export type CurrentUserAction =
   // | UpdateUserImgAction
   | UpdateProfileAction
 
+const userAPIFailure = (error: any) => ({
+  type: actionTypes.USER_API_FAILURE,
+  payload: { error },
+})
+
 export const createUser = (
   name: string,
   email: string,
   password: string
 ): CurrentUserThunkActionType => {
-  return (dispatch: ThunkDispatch<{}, {}, CreateUserAction | SwitchIsLoadingAction>) => {
-    dispatch(switchIsLoading(true))
+  // TODO: ThunkDispatchの型微妙
+  return (dispatch: ThunkDispatch<{}, {}, UserAPIRequest | CreateUserAction>) => {
+    dispatch({ type: actionTypes.USER_API_REQUEST })
     return axios
       .post(`${ROOT_URL}/api/v1/users`, {
         user: { name, email, password },
@@ -83,18 +83,18 @@ export const createUser = (
           type: actionTypes.SET_CURRENT_USER,
           payload: { currentUser: res.data },
         })
-        dispatch(switchIsLoading(false))
       })
       .catch(err => {
-        alert(err) // 暫定処理
-        dispatch(switchIsLoading(false))
+        // TODO: errの型が{status: string, message: string}でない場合(想定していないエラーの場合)、APIにエラーログを投げる
+        dispatch(userAPIFailure(err))
       })
   }
 }
 
 export const createSession = (email: string, password: string): CurrentUserThunkActionType => {
-  return (dispatch: ThunkDispatch<{}, {}, CreateSessionAction | SwitchIsLoadingAction>) => {
-    dispatch(switchIsLoading(true))
+  // TODO: ThunkDispatchの型微妙
+  return (dispatch: ThunkDispatch<{}, {}, UserAPIRequest | CreateSessionAction>) => {
+    dispatch({ type: actionTypes.USER_API_REQUEST })
     return axios
       .post(`${ROOT_URL}/api/v1/session`, {
         auth: { email: email, password: password },
@@ -107,8 +107,8 @@ export const createSession = (email: string, password: string): CurrentUserThunk
         })
       })
       .catch(err => {
-        alert(err) // 暫定処理
-        dispatch(switchIsLoading(false))
+        // TODO: errの型が{status: string, message: string}でない場合(想定していないエラーの場合)、APIにエラーログを投げる
+        dispatch(userAPIFailure(err))
       })
   }
 }
@@ -118,8 +118,9 @@ export const updateProfile = (
   email: string,
   password: string
 ): CurrentUserThunkActionType => {
-  return (dispatch: ThunkDispatch<{}, {}, UpdateProfileAction | SwitchIsLoadingAction>) => {
-    dispatch(switchIsLoading(true))
+  // TODO: ThunkDispatchの型微妙
+  return (dispatch: ThunkDispatch<{}, {}, UserAPIRequest | UpdateProfileAction>) => {
+    dispatch({ type: actionTypes.USER_API_REQUEST })
     return axios({
       method: 'put',
       // TODO:RESTfulなURLを考慮
@@ -132,11 +133,10 @@ export const updateProfile = (
           type: actionTypes.UPDATE_CURRENT_USER,
           payload: { updatedUser: res.data },
         })
-        dispatch(switchIsLoading(false))
       })
       .catch(err => {
-        alert(err)
-        dispatch(switchIsLoading(false))
+        // TODO: errの型が{status: string, message: string}でない場合(想定していないエラーの場合)、APIにエラーログを投げる
+        dispatch(userAPIFailure(err))
       })
   }
 }
