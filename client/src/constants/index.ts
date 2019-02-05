@@ -1,5 +1,6 @@
 import keyMirror from 'keymirror'
 
+// actionでもreducerでも使われるのでactions配下ではなくここに置く
 export const actionTypes = keyMirror({
   // User
   USER_API_REQUEST: null,
@@ -10,3 +11,5 @@ export const actionTypes = keyMirror({
   UPDATE_CURRENT_USER: null,
   DELETE_SESSION: null,
 })
+
+export const ROOT_URL = 'http://localhost:3000'
