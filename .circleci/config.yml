@@ -90,9 +90,6 @@ jobs:
           name: run go get
           command: go get -v -t -d ./...
       - run:
-          name: run go vet
-          command: go vet ./...
-      - run:
           name: run go test
           command: GO_ENV=test go test ./...
       - save_cache:
