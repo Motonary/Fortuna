@@ -11,7 +11,6 @@ jobs:
       - GOPATH: /home/circleci/go
       - GOCACHE: "/tmp/go/cache"
     steps:
-      - run: echo 'export PATH=${GOPATH}/bin/:${PATH}' >> $BASH_ENV
       - checkout
       - restore_cache:
           keys:
@@ -68,6 +67,7 @@ jobs:
           MYSQL_ALLOW_EMPTY_PASSWORD: true
           MYSQL_DB: circleci_test
     steps:
+      - run: echo 'export PATH=${GOPATH}/bin/:${PATH}' >> $BASH_ENV
       - checkout
       - restore_cache:
           keys:
@@ -77,8 +77,8 @@ jobs:
       - run: sudo apt-get install mysql-client --allow-unauthenticated
       - run:
           name: install sql-migrate
-          command: go get github.com/rubenv/sql-migrate/...
-      - run: pwd
+          command: go get -v github.com/rubenv/sql-migrate/...
+      - run: pwd; which sql-migrate;
       - run:
           name: migration
           command: sql-migrate up -config="config/migration_config_ci.yml" -env="test"
