@@ -77,7 +77,7 @@ jobs:
       - run: sudo apt-get install mysql-client --allow-unauthenticated
       - run:
           name: install sql-migrate
-          command: go get -v github.com/rubenv/sql-migrate/...
+          command: go get github.com/rubenv/sql-migrate/...
       - run:
           name: migration
           command: sql-migrate up -config="config/migration_config_ci.yml" -env="test"
