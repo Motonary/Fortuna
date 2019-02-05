@@ -7,7 +7,6 @@ import { BaseAction } from './static-types'
 import { User } from '../constants/static-types'
 import { CreateUserValues, CreateSessionValues } from '../components/organisms/Form/types'
 import { toHash } from '../constants/functions'
-import { object } from 'prop-types'
 
 export type CurrentUserThunkActionType = ThunkAction<Promise<void>, {}, {}, AnyAction> // TODO: Rename
 
