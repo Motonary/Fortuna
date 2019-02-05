@@ -84,6 +84,12 @@ jobs:
           name: migration
           command: sql-migrate up -config="config/migration_config_ci.yml" -env="test"
       - run:
+          name: install dep
+          command: go get github.com/golang/dep/cmd/dep
+      - run:
+          name: ensure
+          command: dep ensure
+      - run:
           name: run go test
           command: GO_ENV=test go test ./...
       - save_cache:
