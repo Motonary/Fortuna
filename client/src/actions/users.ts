@@ -2,9 +2,9 @@ import { AnyAction } from 'redux'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 import axios from 'axios'
 
-import { actionTypes } from '../constants/action-types'
-import { BaseAction, User } from '../constants/static-types'
-import { ROOT_URL } from '../constants/url'
+import { actionTypes, ROOT_URL } from '../constants'
+import { BaseAction } from './static-types'
+import { User } from '../constants/static-types'
 import { toHash } from '../constants/functions'
 
 export type CurrentUserThunkActionType = ThunkAction<Promise<void>, {}, {}, AnyAction> // TODO: Rename

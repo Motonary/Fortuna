@@ -1,7 +1,7 @@
-import { actionTypes } from '../constants/action-types'
+import { actionTypes } from '../constants'
 import { User } from '../constants/static-types'
 import { CurrentUserAction } from '../actions/users'
-import { ReduxAPIStruct, defaultSet } from './reducer-type'
+import { ReduxAPIStruct, defaultSet } from './static-types'
 
 export const currentUser = (
   state: ReduxAPIStruct<User> = defaultSet(),
