@@ -11,6 +11,7 @@ jobs:
       - GOPATH: /home/circleci/go
       - GOCACHE: "/tmp/go/cache"
     steps:
+      - run: echo 'export PATH=${GOPATH}/bin/:${PATH}' >> $BASH_ENV
       - checkout
       - restore_cache:
           keys:
