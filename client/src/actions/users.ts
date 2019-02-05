@@ -1,6 +1,7 @@
 import { AnyAction } from 'redux'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 import axios from 'axios'
+import sha256 from 'crypto-js/sha256'
 
 import { actionTypes } from '../constants/action-types'
 import { BaseAction, User } from '../constants/static-types'
@@ -71,12 +72,13 @@ export const createUser = (
   email: string,
   password: string
 ): CurrentUserThunkActionType => {
+  const pass = sha256(password)
   // TODO: ThunkDispatchの型微妙
   return (dispatch: ThunkDispatch<{}, {}, UserAPIRequest | CreateUserAction>) => {
     dispatch({ type: actionTypes.USER_API_REQUEST })
     return axios
       .post(`${ROOT_URL}/api/v1/users`, {
-        user: { name, email, password },
+        user: { name, email, pass },
       })
       .then(res => {
         dispatch({
