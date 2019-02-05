@@ -78,6 +78,7 @@ jobs:
       - run:
           name: install sql-migrate
           command: go get github.com/rubenv/sql-migrate/...
+      - run: pwd
       - run:
           name: migration
           command: sql-migrate up -config="config/migration_config_ci.yml" -env="test"
