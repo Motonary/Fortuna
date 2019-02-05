@@ -64,8 +64,8 @@ jobs:
         environment:
           MYSQL_HOST: 127.0.0.1
           MYSQL_USER: root
+          MYSQL_DATABASE: circleci_test
           MYSQL_ALLOW_EMPTY_PASSWORD: true
-          MYSQL_DB: circleci_test
     steps:
       - run: echo 'export PATH=${GOPATH}/bin/:${PATH}' >> $BASH_ENV
       - checkout
@@ -75,6 +75,9 @@ jobs:
       - attach_workspace:
           at: /
       - run: sudo apt-get install mysql-client --allow-unauthenticated
+      - run:
+          name: mysql demon status
+          command: mysqld status
       - run:
           name: install sql-migrate
           command: go get -v github.com/rubenv/sql-migrate/...
