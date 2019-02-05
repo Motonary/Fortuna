@@ -8,8 +8,8 @@ export interface User {
   name: string
   email: string
   password: string
-  createdAt: any // string?
-  updatedAt: any // string?
+  createdAt: unknown // string?
+  updatedAt: unknown // string?
 }
 
 export type StatusCodeSuccess = 200 | 204
