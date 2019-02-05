@@ -5,6 +5,7 @@ import axios from 'axios'
 import { actionTypes } from '../constants/action-types'
 import { BaseAction, User } from '../constants/static-types'
 import { ROOT_URL } from '../constants/url'
+import { toHash } from '../constants/functions'
 
 export type CurrentUserThunkActionType = ThunkAction<Promise<void>, {}, {}, AnyAction> // TODO: Rename
 
