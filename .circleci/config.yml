@@ -87,8 +87,11 @@ jobs:
           name: install dep
           command: go get github.com/golang/dep/cmd/dep
       - run:
-          name: ensure
-          command: dep ensure
+          name: run go get
+          command: go get -v -t -d ./...
+      - run:
+          name: run go vet
+          command: go vet ./...
       - run:
           name: run go test
           command: GO_ENV=test go test ./...
