@@ -60,7 +60,7 @@ jobs:
       - GOCACHE: "/tmp/go/cache"
     docker:
       - image: circleci/golang:1.11
-      - image: circleci/mysql:5.7.24
+      - image: circleci/mysql:5.7.25
         command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --sql-mode="no_auto_create_user,no_engine_substitution"
         environment:
           MYSQL_HOST: 127.0.0.1
