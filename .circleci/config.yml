@@ -54,11 +54,11 @@ jobs:
             - go/src/github.com/motonary/Fortuna/builds
 
   test:
-    working_directory: /go/src/github.com/motonary/Fortuna
     environment:
       - GOPATH: /home/circleci/go
       - GOCACHE: "/tmp/go/cache"
     docker:
+      - image: circleci/golang:1.11
       - image: circleci/mysql:5.7.24
         command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --sql-mode="no_auto_create_user,no_engine_substitution"
         environment:
@@ -66,7 +66,7 @@ jobs:
           MYSQL_USER: root
           MYSQL_DATABASE: circleci_test
           MYSQL_ALLOW_EMPTY_PASSWORD: true
-      - image: circleci/golang:1.11
+    working_directory: /go/src/github.com/motonary/Fortuna
     steps:
       - run: echo 'export PATH=${GOPATH}/bin/:${PATH}' >> $BASH_ENV
       - checkout
