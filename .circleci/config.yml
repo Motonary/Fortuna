@@ -79,7 +79,6 @@ jobs:
       - run:
           name: install sql-migrate
           command: go get -v github.com/rubenv/sql-migrate/...
-      - run: pwd; which sql-migrate;
       - run:
           name: migration
           command: sql-migrate up -config="config/migration_config_ci.yml" -env="test"
@@ -91,7 +90,7 @@ jobs:
           command: go get -v -t -d ./...
       - run:
           name: run go test
-          command: GO_ENV=test go test ./...
+          command: GO_ENV=circleci go test -v -cover ./...
       - save_cache:
           key: build-cache-{{ .Branch }}--{{ .Revision }}
           paths:

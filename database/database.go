@@ -40,13 +40,17 @@ func Connect() *gorm.DB {
 }
 
 func getConfigFile() string {
+	if os.Getenv("GO_ENV") == "circleci" {
+		return "../../../config/database.ci.yml"
+	}
 	if _, err := os.Stat("config/database.yml"); err == nil {
 		return "config/database.yml"
 	}
 	if _, err := os.Stat("../config/database.yml"); err == nil {
 		return "../config/database.yml"
+	} else {
+		return "../../../config/database.yml"
 	}
-	return "../../../config/database.yml"
 }
 
 func loadConfig(file_path string) []byte {
