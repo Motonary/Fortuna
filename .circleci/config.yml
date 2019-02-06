@@ -83,7 +83,18 @@ jobs:
       - run:
           name: migration
           command: sql-migrate up -config="config/migration_config.ci.yml" -env="test"
+
+    # 一旦ハードコーディングでインストール
       - run: go get "github.com/motonary/Fortuna"
+      - run: go get "github.com/dgrijalva/jwt-go"
+      - run: go get "github.com/go-chi/chi"
+      - run: go get "github.com/go-chi/jwtauth"
+      - run: go get "github.com/go-sql-driver/mysql"
+      - run: go get "github.com/jinzhu/gorm"
+      - run: go get "github.com/jinzhu/inflection"
+      - run: go get "google.golang.org/appengine"
+      - run: go get "gopkg.in/yaml.v2"
+
       - run:
           name: run go test
           command: GO_ENV=circleci go test -v -cover ./...
