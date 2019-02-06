@@ -88,7 +88,6 @@ jobs:
       - run:
           name: run go get
           command: go get -v "github.com/motonary/Fortuna"
-      - run: dep ensure
       - run:
           name: run go test
           command: GO_ENV=circleci go test -v -cover ./...
