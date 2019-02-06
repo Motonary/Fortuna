@@ -52,13 +52,13 @@
   name = "github.com/jinzhu/inflection"
   branch = "master"
 
-[[override]]
-  name = "google.golang.org/appengine"
-  version = "1.4.0"
-
 [[constraint]]
   name = "gopkg.in/yaml.v2"
   version = "2.2.2"
+
+[[override]]
+  name = "google.golang.org/appengine"
+  version = "1.4.0"
 
 [prune]
   go-tests = true

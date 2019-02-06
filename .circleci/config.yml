@@ -41,6 +41,9 @@ jobs:
             - build-cache-{{ .Branch }}--
             - build-cache-master--
             - build-cache-
+      - run:
+          name: build
+          command: go build
       - save_cache:
           key: build-cache-{{ .Branch }}--{{ .Revision }}
           paths:
