@@ -1,0 +1,4 @@
+test:
+  dialect: mysql
+  dir: database/migrations
+  datasource: root:@/circleci_test?charset=utf8&parseTime=True&loc=Local

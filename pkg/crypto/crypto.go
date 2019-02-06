@@ -2,7 +2,7 @@ package crypto
 
 import (
 	"encoding/base64"
-	
+
 	"github.com/google/uuid"
 )
 
@@ -20,7 +20,7 @@ func LongSecureRandomBase64() string {
 
 func MultipleSecureRandomBase64(n int) string {
 	if n <= 1 {
-			return SecureRandomBase64()
+		return SecureRandomBase64()
 	}
-	return SecureRandomBase64() + MultipleSecureRandomBase64(n - 1)
+	return SecureRandomBase64() + MultipleSecureRandomBase64(n-1)
 }
