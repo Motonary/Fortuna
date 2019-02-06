@@ -82,6 +82,7 @@ jobs:
       - run:
           name: migration
           command: sql-migrate up -config="config/migration_config.ci.yml" -env="test"
+      - run: go get "github.com/motonary/Fortuna"
       - run:
           name: run go test
           command: GO_ENV=circleci go test -v -cover ./...
