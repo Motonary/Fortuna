@@ -1,6 +1,7 @@
 package database
 
 import (
+	"io/ioutil"
 	"log"
 	"os"
 
@@ -8,31 +9,56 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/inflection"
+	yaml "gopkg.in/yaml.v2"
 )
 
-func main() {
-	db, err := gormConnect()
-	defer db.Close()
+var (
+	DB   *gorm.DB
+	seed map[string]map[string]string
+)
 
-	if err != nil {
-		return
-	}
+func init() {
+	yml := loadConfig(getConfigFile())
+	_ = yaml.Unmarshal(yml, &seed)
+
+	DB = Connect()
+	log.Printf("database connected\n")
 }
 
-func gormConnect() (*gorm.DB, error) {
-	DBMS := "mysql"
-	USER := os.Getenv("DB_USER")
-	PASS := os.Getenv("DB_PASS")
-	PROTOCOL := ""
-	DBNAME := os.Getenv("DB_NAME")
-	OPTION := "charset=utf8&parseTime=True&loc=Local" // enable time.Time
+func Connect() *gorm.DB {
+	conf := seed[os.Getenv("GO_ENV")]
 
-	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + "?" + OPTION
-	db, err := gorm.Open(DBMS, CONNECT)
+	CONNECT := conf["user"] + ":" + conf["pass"] + "@" + conf["protocool"] + "/" + conf["db"] + "?" + conf["option"]
+	DB, err := gorm.Open(conf["driver"], CONNECT)
 
 	if err != nil {
+		log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 		log.Print(err)
 	}
 
-	return db, err
+	return DB
+}
+
+func getConfigFile() string {
+	if _, err := os.Stat("config/database.yml"); err == nil {
+		return "config/database.yml"
+	}
+	if _, err := os.Stat("../config/database.yml"); err == nil {
+		return "../config/database.yml"
+	}
+	return "../../../config/database.yml"
+}
+
+func loadConfig(file_path string) []byte {
+	yml, err := ioutil.ReadFile(file_path)
+	if err != nil {
+		log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
+		log.Println(err)
+	}
+	return yml
+}
+
+func dbLogger() {
+	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
+	log.Println()
 }
