@@ -87,7 +87,8 @@ jobs:
           command: go get github.com/golang/dep/cmd/dep
       - run:
           name: run go get
-          command: go get -v -t -d ./...
+          command: go get -v "github.com/motonary/Fortuna"
+      - run: dep ensure
       - run:
           name: run go test
           command: GO_ENV=circleci go test -v -cover ./...
