@@ -5,6 +5,8 @@ import axios from 'axios'
 import { actionTypes, ROOT_URL } from '../constants'
 import { BaseAction } from './static-types'
 import { User } from '../constants/static-types'
+import { CreateUserValues, CreateSessionValues } from '../components/organisms/Form/types'
+import { toHash } from '../constants/functions'
 
 export type CurrentUserThunkActionType = ThunkAction<Promise<void>, {}, {}, AnyAction> // TODO: Rename
 
@@ -66,17 +68,16 @@ const userAPIFailure = (error: any) => ({
   payload: { error },
 })
 
-export const createUser = (
-  name: string,
-  email: string,
-  password: string
-): CurrentUserThunkActionType => {
+export const createUser = (values: CreateUserValues): CurrentUserThunkActionType => {
+  const { confirmation, ...sentValues } = values
+  sentValues.password = toHash(values.password)
+
   // TODO: ThunkDispatchの型微妙
   return (dispatch: ThunkDispatch<{}, {}, UserAPIRequest | CreateUserAction>) => {
     dispatch({ type: actionTypes.USER_API_REQUEST })
     return axios
       .post(`${ROOT_URL}/api/v1/users`, {
-        user: { name, email, password },
+        user: sentValues,
       })
       .then(res => {
         dispatch({
@@ -91,13 +92,16 @@ export const createUser = (
   }
 }
 
-export const createSession = (email: string, password: string): CurrentUserThunkActionType => {
+export const createSession = (values: CreateSessionValues): CurrentUserThunkActionType => {
+  const sentValues = Object.assign({}, values)
+  sentValues.password = toHash(values.password)
+
   // TODO: ThunkDispatchの型微妙
   return (dispatch: ThunkDispatch<{}, {}, UserAPIRequest | CreateSessionAction>) => {
     dispatch({ type: actionTypes.USER_API_REQUEST })
     return axios
       .post(`${ROOT_URL}/api/v1/session`, {
-        auth: { email: email, password: password },
+        auth: sentValues,
       })
       .then(res => {
         sessionStorage.setItem('jwt', res.data.jwt.token)

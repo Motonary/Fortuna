@@ -2,14 +2,14 @@ import { FormikActions } from 'formik'
 import { CurrentUserThunkActionType } from '../../../actions/users'
 
 // Form values
-interface CreateUserValues {
+export interface CreateUserValues {
   name: string
   email: string
   password: string
   confirmation: string
 }
 
-interface CreateSessionValues {
+export interface CreateSessionValues {
   email: string
   password: string
 }
