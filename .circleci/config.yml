@@ -81,7 +81,7 @@ jobs:
           command: go get -v github.com/rubenv/sql-migrate/...
       - run:
           name: migration
-          command: sql-migrate up -config="config/migration_config_ci.yml" -env="test"
+          command: sql-migrate up -config="config/migration_config.ci.yml" -env="test"
       - run:
           name: install dep
           command: go get github.com/golang/dep/cmd/dep
