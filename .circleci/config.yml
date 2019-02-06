@@ -13,6 +13,8 @@ jobs:
     steps:
       - run: echo 'export PATH=${GOPATH}/bin/:${PATH}' >> $BASH_ENV
       - checkout
+      - run: git submodule sync
+      - run: git submodule update --init
       - restore_cache:
           keys:
             - vendor-{{ checksum "Gopkg.lock" }}
@@ -42,7 +44,7 @@ jobs:
       - save_cache:
           key: build-cache-{{ .Branch }}--{{ .Revision }}
           paths:
-              - /tmp/go/cache
+            - /tmp/go/cache
           when: on_fail
       - run:
           name: prepare cache dir if not exists
