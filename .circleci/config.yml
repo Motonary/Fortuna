@@ -13,8 +13,6 @@ jobs:
     steps:
       - run: echo 'export PATH=${GOPATH}/bin/:${PATH}' >> $BASH_ENV
       - checkout
-      - run: git submodule sync
-      - run: git submodule update --init
       - restore_cache:
           keys:
             - vendor-{{ checksum "Gopkg.lock" }}
