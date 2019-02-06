@@ -55,7 +55,7 @@ jobs:
 
   test:
     environment:
-      - GOPATH: /home/circleci/go
+      - GOPATH: /home/circleci/go/src/github.com./motonary/Fortuna
       - GOCACHE: "/tmp/go/cache"
     docker:
       - image: circleci/golang:1.11
