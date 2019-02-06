@@ -17,17 +17,18 @@ interface CreateSessionValues {
 export type FormValues = CreateSessionValues | CreateUserValues
 
 export interface FormErrorMsgs {
-  name?: 'Username required' | 'Too long username'
+  name?: 'Username required' | 'Too long name'
   email?: 'Required' | 'Invalid email address'
   password?: 'Required'
   confirmation?: 'Password confirmation required' | 'Not match password'
 }
 
 // Functions
-export type SubmitHofType = ((values: FormValues, actions: FormikActions<FormValues>) => void)
+export type SubmitHofType = (values: FormValues, actions: FormikActions<FormValues>) => void
 
 export type FormGeneratorType = (type: string) => JSX.Element
 
-export type FormType = (
-  { actionFunc, ...rest }: { actionFunc: CurrentUserThunkActionType } & any
-) => JSX.Element
+export type FormType = ({
+  actionFunc,
+  ...rest
+}: { actionFunc: CurrentUserThunkActionType } & any) => JSX.Element
