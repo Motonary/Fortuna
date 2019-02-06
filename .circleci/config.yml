@@ -92,6 +92,7 @@ jobs:
       - run: go get "github.com/go-sql-driver/mysql"
       - run: go get "github.com/jinzhu/gorm"
       - run: go get "github.com/jinzhu/inflection"
+      - run: go get "github.com/google/uuid"
       - run: go get "google.golang.org/appengine"
       - run: go get "gopkg.in/yaml.v2"
 
