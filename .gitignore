@@ -2,7 +2,6 @@
 .vscode
 
 # frontend modules
-/client/coverage
 /client/node_modules
 /client/dist/bundle.js
 
