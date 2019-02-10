@@ -10,11 +10,12 @@
     "storybook": "start-storybook -p 9001 -c src/.storybook",
     "lint": "yarn tslint ./src/**/*.{ts,tsx}",
     "fix": "yarn tslint --fix ./src/javascripts/**/*.{ts,tsx}",
-    "test": "jest"
+    "test": "NODE_ENV=test jest"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn test"
     }
   },
   "lint-staged": {
@@ -80,31 +81,5 @@
   },
   "engines": {
     "yarn": "1.x"
-  },
-  "jest": {
-    "setupTestFrameworkScriptFile": "./node_modules/jest-enzyme/lib/index.js",
-    "collectCoverage": true,
-    "transform": {
-      "^.+\\.(ts|tsx)$": "ts-jest",
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>src/__mocks__/fileTransformer.js"
-    },
-    "testMatch": [
-      "**/*.test.(ts|tsx)"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "!/node_modules/types"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json"
-    ],
-    "moduleNameMapper": {
-      "\\.(css)$": "identity-obj-proxy"
-    },
-    "verbose": true
   }
 }
