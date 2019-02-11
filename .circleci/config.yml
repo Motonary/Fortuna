@@ -71,6 +71,7 @@ jobs:
       - run: echo 'export GOPATH=${GOPATH}/src/github.com/moronary/Fortuna' >> $BASH_ENV
       - run: echo 'export PATH=${GOPATH}/bin/:${PATH}' >> $BASH_ENV
       - checkout
+      - run: git status
       - restore_cache:
           keys:
             - vendor-{{ checksum "Gopkg.lock" }}
