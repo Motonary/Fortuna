@@ -71,7 +71,6 @@ jobs:
       - run: echo 'export GOPATH=${GOPATH}/src/github.com/moronary/Fortuna' >> $BASH_ENV
       - run: echo 'export PATH=${GOPATH}/bin/:${PATH}' >> $BASH_ENV
       - checkout
-      - run: git status
       - restore_cache:
           keys:
             - vendor-{{ checksum "Gopkg.lock" }}
@@ -86,7 +85,6 @@ jobs:
           command: sql-migrate up -config="config/migration_config.ci.yml" -env="test"
 
     # 一旦ハードコーディングでインストール
-      - run: go get "github.com/motonary/Fortuna"
       - run: go get "github.com/dgrijalva/jwt-go"
       - run: go get "github.com/go-chi/chi"
       - run: go get "github.com/go-chi/jwtauth"
