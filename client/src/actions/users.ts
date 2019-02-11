@@ -87,7 +87,7 @@ export const createUser = (values: CreateUserValues): CurrentUserThunkActionType
         })
       })
       .catch((err: ReduxAPIError) => {
-        if ('status' in err && 'message' in err) {
+        if ('statusCode' in err && 'message' in err) {
           dispatch(userAPIFailure(err))
         } else {
           dispatch(userAPIFailure({ statusCode: 500, message: 'Unexpected error' }))
@@ -115,7 +115,7 @@ export const createSession = (values: CreateSessionValues): CurrentUserThunkActi
         })
       })
       .catch((err: ReduxAPIError) => {
-        if ('status' in err && 'message' in err) {
+        if ('statusCode' in err && 'message' in err) {
           dispatch(userAPIFailure(err))
         } else {
           dispatch(userAPIFailure({ statusCode: 500, message: 'Unexpected error' }))
@@ -146,7 +146,7 @@ export const updateProfile = (
         })
       })
       .catch((err: ReduxAPIError) => {
-        if ('status' in err && 'message' in err) {
+        if ('statusCode' in err && 'message' in err) {
           dispatch(userAPIFailure(err))
         } else {
           dispatch(userAPIFailure({ statusCode: 500, message: 'Unexpected error' }))
