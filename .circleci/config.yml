@@ -68,7 +68,6 @@ jobs:
           MYSQL_ALLOW_EMPTY_PASSWORD: true
     working_directory: /go/src/github.com/motonary/Fortuna
     steps:
-      - run: echo 'export GOPATH=${GOPATH}/.vendor/github.com/motonary/Fortuna' >> $BASH_ENV
       - run: echo 'export PATH=${GOPATH}/bin/:${PATH}' >> $BASH_ENV
       - checkout
       - restore_cache:
