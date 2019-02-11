@@ -5,6 +5,7 @@ import axios from 'axios'
 import { actionTypes, ROOT_URL } from '../constants'
 import { BaseAction } from './static-types'
 import { User } from '../constants/static-types'
+import { ReduxAPIError } from '../reducers/static-types'
 import { CreateUserValues, CreateSessionValues } from '../components/organisms/Form/types'
 import { toHash } from '../constants/functions'
 
@@ -16,7 +17,7 @@ interface UserAPIRequest extends BaseAction {
 
 interface UserAPIFailure extends BaseAction {
   type: string
-  payload: { error: any } // TODO: 厳格に
+  payload: { error: ReduxAPIError }
 }
 
 interface CreateUserAction extends BaseAction {
@@ -63,7 +64,7 @@ export type CurrentUserAction =
   // | UpdateUserImgAction
   | UpdateProfileAction
 
-const userAPIFailure = (error: any) => ({
+const userAPIFailure = (error: ReduxAPIError) => ({
   type: actionTypes.USER_API_FAILURE,
   payload: { error },
 })
@@ -85,9 +86,12 @@ export const createUser = (values: CreateUserValues): CurrentUserThunkActionType
           payload: { currentUser: res.data },
         })
       })
-      .catch(err => {
-        // TODO: errの型が{status: string, message: string}でない場合(想定していないエラーの場合)、APIにエラーログを投げる
-        dispatch(userAPIFailure(err))
+      .catch((err: ReduxAPIError) => {
+        if ('status' in err && 'message' in err) {
+          dispatch(userAPIFailure(err))
+        } else {
+          dispatch(userAPIFailure({ statusCode: 500, message: 'Unexpected error' }))
+        }
       })
   }
 }
@@ -110,9 +114,12 @@ export const createSession = (values: CreateSessionValues): CurrentUserThunkActi
           payload: { currentUser: res.data },
         })
       })
-      .catch(err => {
-        // TODO: errの型が{status: string, message: string}でない場合(想定していないエラーの場合)、APIにエラーログを投げる
-        dispatch(userAPIFailure(err))
+      .catch((err: ReduxAPIError) => {
+        if ('status' in err && 'message' in err) {
+          dispatch(userAPIFailure(err))
+        } else {
+          dispatch(userAPIFailure({ statusCode: 500, message: 'Unexpected error' }))
+        }
       })
   }
 }
@@ -138,9 +145,12 @@ export const updateProfile = (
           payload: { updatedUser: res.data },
         })
       })
-      .catch(err => {
-        // TODO: errの型が{status: string, message: string}でない場合(想定していないエラーの場合)、APIにエラーログを投げる
-        dispatch(userAPIFailure(err))
+      .catch((err: ReduxAPIError) => {
+        if ('status' in err && 'message' in err) {
+          dispatch(userAPIFailure(err))
+        } else {
+          dispatch(userAPIFailure({ statusCode: 500, message: 'Unexpected error' }))
+        }
       })
   }
 }
