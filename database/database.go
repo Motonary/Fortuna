@@ -40,7 +40,7 @@ func Connect() *gorm.DB {
 }
 
 func getConfigFile() string {
-	log.Printf(os.Getenv("GO_ENV"))
+	log.Printf("\n%s\n", os.Getenv("GO_ENV"))
 	if os.Getenv("GO_ENV") == "circleci" {
 		return "../../../config/database.ci.yml"
 	}

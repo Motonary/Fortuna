@@ -4,7 +4,9 @@ import (
 	"os"
 	"testing"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 
 	"github.com/motonary/Fortuna/entity"
 	test "github.com/motonary/Fortuna/testdata"
