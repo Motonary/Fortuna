@@ -7,7 +7,7 @@ import reducers from './reducers'
 import thunk from 'redux-thunk'
 import axios from 'axios'
 
-import Hello from './components/Hello'
+import TopPage from './components/pages/TopPage'
 import Auth from './components/utils/auth'
 
 import { ROOT_URL } from './constants'
@@ -18,7 +18,7 @@ ReactDOM.render(
   <Provider store={store}>
     <Router>
       <Switch>
-        <Route exact path="/" component={Hello} />
+        <Route exact path="/" component={TopPage} />
         <Auth>
           <Switch>
             <Route render={() => <h2>404 Not Found</h2>} />
