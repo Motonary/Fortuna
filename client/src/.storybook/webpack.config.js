@@ -8,7 +8,7 @@ module.exports = (baseConfig, env, defaultConfig) => {
   })
 
   defaultConfig.module.rules.push({
-    test: /\.stories\.jsx?$/,
+    test: /\.stories\.tsx$/,
     loaders: [
       {
         loader: require.resolve("@storybook/addon-storysource/loader"),
