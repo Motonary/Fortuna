@@ -1,10 +1,6 @@
 import * as React from 'react'
 import TopPageTemplate from '../../templates/TopPageTemplate'
 
-class TopPage extends React.Component {
-  render(): JSX.Element {
-    return <TopPageTemplate />
-  }
-}
+const TopPage = () => <TopPageTemplate />
 
 export default TopPage
