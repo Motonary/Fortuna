@@ -5,9 +5,8 @@ module.exports = (baseConfig, env, defaultConfig) => {
     test: /\.(ts|tsx)$/,
     include: path.resolve(__dirname, '../'),
     loader: require.resolve("ts-loader")
-  });
+  })
 
-  // addon-storysource使うときだけ
   defaultConfig.module.rules.push({
     test: /\.stories\.jsx?$/,
     loaders: [
@@ -17,7 +16,8 @@ module.exports = (baseConfig, env, defaultConfig) => {
       }
     ],
     enforce: "pre"
-  });
+  })
+
   defaultConfig.resolve.extensions.push(".ts", ".tsx")
 
   return defaultConfig
