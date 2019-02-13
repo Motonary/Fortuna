@@ -4,7 +4,7 @@ module.exports = (baseConfig, env, defaultConfig) => {
   defaultConfig.module.rules.push({
     test: /\.(ts|tsx)$/,
     include: path.resolve(__dirname, '../'),
-    loader: require.resolve("ts-loader")
+    loader: require.resolve("ts-loader"),
   })
 
   defaultConfig.module.rules.push({
@@ -12,10 +12,10 @@ module.exports = (baseConfig, env, defaultConfig) => {
     loaders: [
       {
         loader: require.resolve("@storybook/addon-storysource/loader"),
-        options: { parser: "typescript" }
+        options: { parser: "typescript" },
       }
     ],
-    enforce: "pre"
+    enforce: "pre",
   })
 
   defaultConfig.resolve.extensions.push(".ts", ".tsx")
