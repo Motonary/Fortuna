@@ -1,0 +1,7 @@
+circleci:
+  driver: mysql
+  user: root
+  pass:
+  db: circleci_test
+  protocol: ""
+  option: charset=utf8&parseTime=True&loc=Local
