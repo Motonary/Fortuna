@@ -3,21 +3,21 @@ const path = require("path")
 module.exports = (baseConfig, env, defaultConfig) => {
   defaultConfig.module.rules.push({
     test: /\.(ts|tsx)$/,
-    include: path.resolve(__dirname, '../components'),
-    loader: require.resolve("ts-loader")
-  });
+    include: path.resolve(__dirname, '../'),
+    loader: require.resolve("ts-loader"),
+  })
 
-  // addon-storysource使うときだけ
   defaultConfig.module.rules.push({
-    test: /\.stories\.jsx?$/,
+    test: /\.stories\.tsx$/,
     loaders: [
       {
         loader: require.resolve("@storybook/addon-storysource/loader"),
-        options: { parser: "typescript" }
+        options: { parser: "typescript" },
       }
     ],
-    enforce: "pre"
-  });
+    enforce: "pre",
+  })
+
   defaultConfig.resolve.extensions.push(".ts", ".tsx")
 
   return defaultConfig
