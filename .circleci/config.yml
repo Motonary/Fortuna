@@ -6,7 +6,7 @@ jobs:
   build:
     working_directory: /go/src/github.com/motonary/Fortuna
     docker:
-      - image: circleci/golang:1.11
+      - image: circleci/golang:1.12
     environment:
       - GOPATH: /home/circleci/go
       - GOCACHE: "/tmp/go/cache"
@@ -59,7 +59,7 @@ jobs:
       - GOPATH: /home/circleci/go
       - GOCACHE: "/tmp/go/cache"
     docker:
-      - image: circleci/golang:1.11
+      - image: circleci/golang:1.12
       - image: circleci/mysql:5.7.24
         command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --sql-mode="no_auto_create_user,no_engine_substitution"
         environment:
